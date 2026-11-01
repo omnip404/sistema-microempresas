@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Compra extends Model
 {
+    public const REGISTRADA = 'REGISTRADA';
+
+    public const ANULADA = 'ANULADA';
+
     protected $table = 'compras';
 
     protected $fillable = ['usuario_id', 'proveedor_id', 'fecha', 'nro_comprobante', 'total', 'estado'];

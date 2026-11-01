@@ -44,7 +44,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   Criterios: Administrador y Vendedor pueden listar, buscar (nombre o CI/NIT), crear y editar. Solo el
   Administrador elimina, y solo clientes sin ventas. Entrada "Clientes" en el menú para ambos roles.
 
-- [ ] **L04 – Servicio de compras (RF07)**
+- [x] **L04 – Servicio de compras (RF07)**
   Criterios: `app/Services/CompraService.php` con:
   `registrar(Usuario $usuario, int $proveedorId, array $items, ?string $nroComprobante): Compra`.
   Cada ítem: `producto_id`, `cantidad` (≥ 1), `costo_unitario` (≥ 0). Suma stock, actualiza
