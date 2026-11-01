@@ -1,0 +1,162 @@
+/*
+ * Estilos del sistema. Todos los pares de color cumplen WCAG 2.2 nivel AA
+ * (texto >= 4.5:1, bordes y gráficos >= 3:1); se verificaron con scripts-qa/contraste.js.
+ * Tipografía Atkinson Hyperlegible: diseñada para lectores con baja visión.
+ */
+:root {
+    --fondo: #F5F6F8;
+    --superficie: #FFFFFF;
+    --lateral: #EEF1F4;
+    --texto: #1A1D21;
+    --texto-2: #4A5058;
+    --borde: #D5DAE0;          /* separadores decorativos */
+    --borde-campo: #7A818A;    /* campos y controles: 3.9:1 */
+    --primario: #0B5C6E;       /* blanco encima: 7.6:1 */
+    --primario-hover: #084654;
+    --primario-suave: #E3F1F4;
+    --foco: #B35C00;
+    --aviso-texto: #7A4100;
+    --aviso-fondo: #FFF1D6;
+    --error-texto: #9B1C13;
+    --error-fondo: #FDECEA;
+    --exito-texto: #1E6B3A;
+    --exito-fondo: #E6F4EA;
+    --grafico: #1673A6;
+    --radio: 6px;
+    font-size: 100%;
+}
+
+/* Tamaño de letra elegido por el usuario (botones A− / A+) */
+html[data-letra="1"] { font-size: 112.5%; }
+html[data-letra="2"] { font-size: 125%; }
+
+/* Modo de alto contraste */
+html[data-contraste="alto"] {
+    --fondo: #FFFFFF;
+    --superficie: #FFFFFF;
+    --lateral: #FFFFFF;
+    --texto: #000000;
+    --texto-2: #000000;
+    --borde: #000000;
+    --borde-campo: #000000;
+    --primario: #00303A;
+    --primario-hover: #000000;
+    --primario-suave: #FFE08A;
+    --foco: #000000;
+    --grafico: #00303A;
+}
+html[data-contraste="alto"] .tarjeta,
+html[data-contraste="alto"] .lateral { border-width: 2px; }
+html[data-contraste="alto"] a { text-decoration: underline; }
+
+body {
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: 'Atkinson Hyperlegible', system-ui, 'Segoe UI', Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.55;
+}
+
+h1, h2, h3 { color: var(--texto); font-weight: 700; letter-spacing: 0; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.1rem; }
+
+a { color: var(--primario); }
+.text-secundario { color: var(--texto-2) !important; }
+
+/* Foco siempre visible al navegar con teclado */
+:focus-visible {
+    outline: 3px solid var(--foco) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+}
+
+.saltar {
+    position: absolute; left: .5rem; top: -4rem; z-index: 2000;
+    background: var(--primario); color: #fff; padding: .6rem 1rem; border-radius: var(--radio);
+}
+.saltar:focus { top: .5rem; color: #fff; }
+
+/* Menú lateral */
+.lateral { background: var(--lateral); border-right: 1px solid var(--borde); }
+@media (min-width: 992px) {
+    .lateral { width: 240px; min-height: 100vh; position: sticky; top: 0; }
+}
+.marca { font-weight: 700; font-size: 1.15rem; color: var(--texto); }
+.marca small { display: block; font-weight: 400; font-size: .85rem; color: var(--texto-2); }
+.menu a {
+    display: flex; align-items: center; min-height: 44px; padding: .5rem .85rem;
+    color: var(--texto); text-decoration: none; border-radius: var(--radio);
+    border-left: 4px solid transparent;
+}
+.menu a:hover { background: var(--superficie); }
+.menu a[aria-current="page"] {
+    background: var(--primario-suave); color: var(--primario); font-weight: 700;
+    border-left-color: var(--primario);   /* el estado no depende solo del color */
+}
+
+/* Barra superior en celular y tablet */
+.barra-movil { background: var(--superficie); border-bottom: 1px solid var(--borde); }
+
+/* Controles de accesibilidad */
+.accesibilidad { display: flex; gap: .4rem; flex-wrap: wrap; }
+.accesibilidad button {
+    min-width: 44px; min-height: 44px; border: 1px solid var(--borde-campo);
+    background: var(--superficie); color: var(--texto); border-radius: var(--radio); font-weight: 700;
+}
+.accesibilidad button[aria-pressed="true"] { background: var(--texto); color: var(--superficie); }
+
+/* Contenedores */
+.tarjeta { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); }
+.kpi-etiqueta { color: var(--texto-2); font-size: .9rem; }
+.kpi-valor { font-size: 1.7rem; font-weight: 700; line-height: 1.2; font-variant-numeric: tabular-nums; }
+
+/* Botones y campos: objetivos de al menos 44 px */
+.btn { min-height: 44px; border-radius: var(--radio); font-weight: 700; }
+.btn-sm { min-height: 36px; }
+.btn-primario { background: var(--primario); border: 1px solid var(--primario); color: #fff; }
+.btn-primario:hover, .btn-primario:focus { background: var(--primario-hover); color: #fff; }
+.btn-secundario { background: var(--superficie); border: 1px solid var(--borde-campo); color: var(--texto); }
+.btn-secundario:hover { background: var(--lateral); color: var(--texto); }
+.btn-peligro { background: var(--superficie); border: 1px solid var(--error-texto); color: var(--error-texto); }
+.btn-peligro:hover { background: var(--error-fondo); color: var(--error-texto); }
+
+.form-control, .form-select {
+    min-height: 44px; border: 1px solid var(--borde-campo); border-radius: var(--radio);
+    color: var(--texto); background-color: var(--superficie); font-size: 1rem;
+}
+.form-label { font-weight: 700; margin-bottom: .3rem; }
+.form-text { color: var(--texto-2); }
+.is-invalid { border-color: var(--error-texto) !important; border-width: 2px !important; }
+.invalid-feedback { color: var(--error-texto); font-size: .95rem; }
+
+/* Mensajes */
+.mensaje { border-radius: var(--radio); padding: .85rem 1rem; border: 1px solid; display: flex; gap: .6rem; }
+.mensaje-exito { background: var(--exito-fondo); color: var(--exito-texto); border-color: var(--exito-texto); }
+.mensaje-error { background: var(--error-fondo); color: var(--error-texto); border-color: var(--error-texto); }
+.mensaje-aviso { background: var(--aviso-fondo); color: var(--aviso-texto); border-color: var(--aviso-texto); }
+.mensaje svg { flex: none; margin-top: .2rem; }
+
+/* Etiquetas de estado: siempre ícono + texto, nunca solo color */
+.estado { display: inline-flex; align-items: center; gap: .3rem; padding: .1rem .5rem; border-radius: 999px; font-size: .85rem; font-weight: 700; border: 1px solid; white-space: nowrap; }
+.estado-aviso { background: var(--aviso-fondo); color: var(--aviso-texto); border-color: var(--aviso-texto); }
+.estado-exito { background: var(--exito-fondo); color: var(--exito-texto); border-color: var(--exito-texto); }
+.estado-neutro { background: var(--lateral); color: var(--texto-2); border-color: var(--borde-campo); }
+
+/* Tablas (el título oculto para lectores de pantalla no debe crear barra vertical) */
+.table-responsive { overflow-y: hidden; }
+.tabla { margin-bottom: 0; --bs-table-bg: transparent; color: var(--texto); }
+.tabla th { color: var(--texto-2); font-weight: 700; font-size: .9rem; border-bottom: 2px solid var(--borde-campo); white-space: nowrap; }
+.tabla td { vertical-align: middle; border-color: var(--borde); }
+.numero { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Respeta a quien prefiere menos animaciones */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* Impresión de reportes */
+@media print {
+    .lateral, .barra-movil, .accesibilidad, .saltar, form, .btn { display: none !important; }
+    body { background: #fff; }
+}

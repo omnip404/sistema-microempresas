@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan test)",
+      "Bash(php artisan test:*)",
+      "Bash(php artisan make:*)",
+      "Bash(php artisan route:list:*)",
+      "Bash(php artisan view:clear)",
+      "Bash(vendor/bin/pint)",
+      "Bash(vendor/bin/pint:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git stash push:*)",
+      "Bash(git stash list)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git clean:*)",
+      "Bash(git checkout:*)",
+      "Bash(git rebase:*)",
+      "Bash(composer:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(rm -rf:*)",
+      "Read(./.env)",
+      "Edit(./.env)",
+      "WebFetch",
+      "WebSearch",
+      "mcp__4efca6c4-96c7-4a4b-acec-ac5591484aa9",
+      "mcp__ccf4e9eb-1e1f-40f7-98ea-7b5e45e8d53e",
+      "mcp__1a59c906-04da-521d-bda7-7f71b9f9e01c",
+      "mcp__6d0958da-653e-4f49-9e51-95a71ef840a5"
+    ]
+  }
+}
