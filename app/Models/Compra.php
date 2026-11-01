@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Compra extends Model
 {
     protected $table = 'compras';
+
     protected $fillable = ['usuario_id', 'proveedor_id', 'fecha', 'nro_comprobante', 'total', 'estado'];
 
     protected function casts(): array

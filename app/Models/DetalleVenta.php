@@ -10,6 +10,7 @@ class DetalleVenta extends Model
     public $timestamps = false;
 
     protected $table = 'detalle_ventas';
+
     protected $fillable = ['venta_id', 'producto_id', 'cantidad', 'precio_unitario'];
 
     protected function casts(): array

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Producto extends Model
 {
     protected $table = 'productos';
+
     protected $fillable = [
         'categoria_id', 'codigo', 'nombre', 'unidad_medida',
         'precio_compra', 'precio_venta', 'stock', 'stock_minimo', 'activo',

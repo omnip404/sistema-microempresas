@@ -10,6 +10,7 @@ class Bitacora extends Model
     public const UPDATED_AT = null;
 
     protected $table = 'bitacora';
+
     protected $fillable = ['usuario_id', 'accion', 'tabla', 'registro_id', 'detalle', 'ip'];
 
     protected function casts(): array

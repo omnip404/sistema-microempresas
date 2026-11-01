@@ -15,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 class LoginController extends Controller
 {
     private const MAX_INTENTOS = 3;
+
     private const MINUTOS_BLOQUEO = 5;
 
     public function show()

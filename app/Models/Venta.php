@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Venta extends Model
 {
     public const REGISTRADA = 'REGISTRADA';
+
     public const ANULADA = 'ANULADA';
 
     protected $table = 'ventas';
+
     protected $fillable = ['usuario_id', 'cliente_id', 'fecha', 'total', 'estado', 'motivo_anulacion'];
 
     protected function casts(): array

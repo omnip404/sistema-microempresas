@@ -14,9 +14,7 @@ use Illuminate\Http\Request;
  */
 class VentaController extends Controller
 {
-    public function __construct(private VentaService $ventas)
-    {
-    }
+    public function __construct(private VentaService $ventas) {}
 
     public function index()
     {

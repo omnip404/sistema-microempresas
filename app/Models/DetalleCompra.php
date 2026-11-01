@@ -10,6 +10,7 @@ class DetalleCompra extends Model
     public $timestamps = false;
 
     protected $table = 'detalle_compras';
+
     protected $fillable = ['compra_id', 'producto_id', 'cantidad', 'costo_unitario'];
 
     public function producto(): BelongsTo

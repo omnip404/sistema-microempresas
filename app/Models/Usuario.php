@@ -12,7 +12,9 @@ class Usuario extends Authenticatable
     use Notifiable;
 
     protected $table = 'usuarios';
+
     protected $fillable = ['rol_id', 'nombre', 'email', 'password', 'activo'];
+
     protected $hidden = ['password', 'remember_token'];
 
     protected function casts(): array

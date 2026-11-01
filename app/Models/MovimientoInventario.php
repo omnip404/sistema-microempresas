@@ -10,6 +10,7 @@ class MovimientoInventario extends Model
     public const UPDATED_AT = null;
 
     protected $table = 'movimientos_inventario';
+
     protected $fillable = [
         'producto_id', 'usuario_id', 'tipo', 'cantidad',
         'stock_resultante', 'referencia', 'observacion',
