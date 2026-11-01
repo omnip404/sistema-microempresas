@@ -96,7 +96,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   periodo B es cero, muestra "sin datos del periodo anterior" en vez de dividir. Tabla accesible y gráfico
   de barras con el color de `--grafico`. Pruebas, incluido el caso de periodo vacío.
 
-- [ ] **L12 – Cierre técnico**
+- [x] **L12 – Cierre técnico**
   Criterios: actualizar la tabla de módulos del `README.md` (estado de cada módulo y sus rutas), ejecutar
   `vendor/bin/pint` en todo el proyecto, y `php artisan test` en verde. No tocar el informe ni Trello.
 
