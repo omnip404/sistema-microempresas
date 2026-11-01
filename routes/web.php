@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\VentaController;
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('rol:'.Rol::ADMINISTRADOR)->group(function () {
         Route::get('/panel', [PanelController::class, 'index'])->name('panel');
         Route::resource('productos', ProductoController::class)->except('show');
+        Route::resource('categorias', CategoriaController::class)->except('show');
         Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
         Route::post('/ventas/{venta}/anular', [VentaController::class, 'anular'])->name('ventas.anular');
     });

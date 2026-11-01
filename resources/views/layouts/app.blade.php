@@ -17,6 +17,7 @@
         ['ventas.create', 'Registrar venta', 'ventas.create'],
         $esAdmin ? ['ventas.index', 'Ventas', 'ventas.index'] : null,
         $esAdmin ? ['productos.index', 'Productos', 'productos.*'] : null,
+        $esAdmin ? ['categorias.index', 'Categorías', 'categorias.*'] : null,
     ]);
 @endphp
 

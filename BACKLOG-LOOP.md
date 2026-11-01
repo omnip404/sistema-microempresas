@@ -30,7 +30,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
 
 ## Sprint 3
 
-- [ ] **L01 – Categorías (RF03)**
+- [x] **L01 – Categorías (RF03)**
   Criterios: CRUD de categorías solo para Administrador (sin `show`). El listado muestra cuántos productos
   tiene cada una. Nombre obligatorio, único, máximo 60. No se puede eliminar una categoría con productos
   (mensaje claro). Entrada "Categorías" en el menú.
