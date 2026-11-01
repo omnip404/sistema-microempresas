@@ -21,6 +21,7 @@
         $esAdmin ? ['categorias.index', 'Categorías', 'categorias.*'] : null,
         $esAdmin ? ['proveedores.index', 'Proveedores', 'proveedores.*'] : null,
         $esAdmin ? ['compras.index', 'Compras', 'compras.*'] : null,
+        $esAdmin ? ['reportes.index', 'Reportes', 'reportes.*'] : null,
         $esAdmin ? ['usuarios.index', 'Usuarios', 'usuarios.*'] : null,
         $esAdmin ? ['bitacora.index', 'Bitácora', 'bitacora.*'] : null,
     ]);

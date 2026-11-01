@@ -9,6 +9,7 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaController;
 use App\Models\Rol;
@@ -39,6 +40,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('usuarios', UsuarioController::class)->except(['show', 'destroy']);
         Route::post('/usuarios/{usuario}/estado', [UsuarioController::class, 'cambiarEstado'])->name('usuarios.estado');
         Route::post('/usuarios/{usuario}/desbloquear', [UsuarioController::class, 'desbloquear'])->name('usuarios.desbloquear');
+        Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+        Route::get('/reportes/exportar', [ReporteController::class, 'exportar'])->name('reportes.exportar');
         Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
         Route::get('/compras', [CompraController::class, 'index'])->name('compras.index');
         Route::get('/compras/nueva', [CompraController::class, 'create'])->name('compras.create');

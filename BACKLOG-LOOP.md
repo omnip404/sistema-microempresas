@@ -77,7 +77,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   fechas, 25 filas por página, y el detalle JSON mostrado de forma legible. Registrar también INGRESO y
   SALIDA del sistema desde `LoginController`.
 
-- [ ] **L09 – Reporte de ventas por periodo (RF09)**
+- [x] **L09 – Reporte de ventas por periodo (RF09)**
   Criterios: pantalla "Reportes" con fechas desde y hasta (por defecto, el mes actual; "hasta" no puede ser
   menor que "desde"). Tabla por día: fecha, n.º de ventas, unidades y total, más una fila de totales. Solo
   ventas REGISTRADAS. Botón "Exportar a Excel (CSV)": UTF-8 con BOM, separador `;` y coma decimal, para que
