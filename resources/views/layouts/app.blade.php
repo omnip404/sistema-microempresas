@@ -20,6 +20,7 @@
         $esAdmin ? ['productos.index', 'Productos', 'productos.*'] : null,
         $esAdmin ? ['categorias.index', 'Categorías', 'categorias.*'] : null,
         $esAdmin ? ['proveedores.index', 'Proveedores', 'proveedores.*'] : null,
+        $esAdmin ? ['compras.index', 'Compras', 'compras.*'] : null,
     ]);
 @endphp
 

@@ -21,6 +21,11 @@ class Compra extends Model
         return ['fecha' => 'datetime', 'total' => 'decimal:2'];
     }
 
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(Usuario::class);
+    }
+
     public function proveedor(): BelongsTo
     {
         return $this->belongsTo(Proveedor::class);

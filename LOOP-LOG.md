@@ -7,3 +7,4 @@ Una línea por iteración (la escribe el loop):
 2 | 2026-10-31 21:01 | L02 | HECHA | 21/21 | git log: "L02: Proveedores" | Proveedores: CRUD admin, búsqueda por nombre/NIT, baja lógica, bitácora y menú
 3 | 2026-10-31 21:04 | L03 | HECHA | 28/28 | git log: "L03: Clientes" | Clientes: listar/buscar/crear/editar para ambos roles, eliminar solo admin y sin ventas, bitácora y menú
 4 | 2026-10-31 21:08 | L04 | HECHA | 33/33 | git log: "L04: Servicio de compras" | CompraService registrar/anular en transacción; anulación imposible probada; 2 ciclos de prueba
+5 | 2026-10-31 21:11 | L05 | HECHA | 37/37 | git log: "L05: Pantallas de compras" | compras.index/create/store/anular solo admin, carrito con costo editable y total aria-live, menú

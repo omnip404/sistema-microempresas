@@ -53,7 +53,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   para revertir; si no, descuenta stock, crea movimiento SALIDA `ANULA-COMPRA-{id}` y marca ANULADA.
   Todo en transacción. Pruebas del servicio, incluido el caso de anulación imposible.
 
-- [ ] **L05 – Pantallas de compras (RF07)**
+- [x] **L05 – Pantallas de compras (RF07)**
   Criterios: `compras.create` (proveedor, n.º de comprobante, carrito con producto, cantidad y costo
   editable, total en vivo con `aria-live`) y `compras.index` (listado con estado y botón Anular con
   confirmación). Solo Administrador. Usa `CompraService`. Entrada "Compras" en el menú.

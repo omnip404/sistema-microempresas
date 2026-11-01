@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -29,6 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('rol:'.Rol::ADMINISTRADOR)->group(function () {
         Route::get('/panel', [PanelController::class, 'index'])->name('panel');
         Route::resource('productos', ProductoController::class)->except('show');
+        Route::get('/compras', [CompraController::class, 'index'])->name('compras.index');
+        Route::get('/compras/nueva', [CompraController::class, 'create'])->name('compras.create');
+        Route::post('/compras', [CompraController::class, 'store'])->name('compras.store');
+        Route::post('/compras/{compra}/anular', [CompraController::class, 'anular'])->name('compras.anular');
         Route::delete('/clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
         Route::resource('categorias', CategoriaController::class)->except('show');
         Route::resource('proveedores', ProveedorController::class)->except('show')
