@@ -40,7 +40,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   NIT (opcional, único), teléfono, dirección, activo. Eliminar = baja lógica. Proveedor se registra en la
   bitácora. Entrada "Proveedores" en el menú.
 
-- [ ] **L03 – Clientes (RF05)**
+- [x] **L03 – Clientes (RF05)**
   Criterios: Administrador y Vendedor pueden listar, buscar (nombre o CI/NIT), crear y editar. Solo el
   Administrador elimina, y solo clientes sin ventas. Entrada "Clientes" en el menú para ambos roles.
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -22,10 +23,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/ventas/nueva', [VentaController::class, 'create'])->name('ventas.create');
     Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
 
+    Route::resource('clientes', ClienteController::class)->except(['show', 'destroy']);
+
     // Solo Administrador
     Route::middleware('rol:'.Rol::ADMINISTRADOR)->group(function () {
         Route::get('/panel', [PanelController::class, 'index'])->name('panel');
         Route::resource('productos', ProductoController::class)->except('show');
+        Route::delete('/clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
         Route::resource('categorias', CategoriaController::class)->except('show');
         Route::resource('proveedores', ProveedorController::class)->except('show')
             ->parameters(['proveedores' => 'proveedor']);

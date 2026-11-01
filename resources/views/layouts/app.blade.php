@@ -16,6 +16,7 @@
         $esAdmin ? ['panel', 'Panel', 'panel'] : null,
         ['ventas.create', 'Registrar venta', 'ventas.create'],
         $esAdmin ? ['ventas.index', 'Ventas', 'ventas.index'] : null,
+        ['clientes.index', 'Clientes', 'clientes.*'],
         $esAdmin ? ['productos.index', 'Productos', 'productos.*'] : null,
         $esAdmin ? ['categorias.index', 'Categorías', 'categorias.*'] : null,
         $esAdmin ? ['proveedores.index', 'Proveedores', 'proveedores.*'] : null,
