@@ -91,6 +91,43 @@ class ReporteService
         ];
     }
 
+    /**
+     * Total, cantidad y promedio de las ventas REGISTRADAS de un periodo.
+     *
+     * @return array{total: float, ventas: int, promedio: float}
+     */
+    public function resumenVentas(Carbon $desde, Carbon $hasta): array
+    {
+        $resumen = Venta::where('estado', Venta::REGISTRADA)
+            ->whereBetween('fecha', [$desde, $hasta])
+            ->selectRaw('COUNT(*) as ventas, COALESCE(SUM(total), 0) as total')
+            ->first();
+
+        $ventas = (int) $resumen->ventas;
+        $total = (float) $resumen->total;
+
+        return ['total' => $total, 'ventas' => $ventas, 'promedio' => $ventas > 0 ? round($total / $ventas, 2) : 0.0];
+    }
+
+    /**
+     * Compara el periodo A con el B. La variación es el cambio % de A respecto de B;
+     * si B vale cero no se puede calcular y queda en null (nunca se divide entre cero).
+     *
+     * @return array{a: array, b: array, variacion: array{total: ?float, ventas: ?float, promedio: ?float}}
+     */
+    public function compararPeriodos(Carbon $desdeA, Carbon $hastaA, Carbon $desdeB, Carbon $hastaB): array
+    {
+        $a = $this->resumenVentas($desdeA, $hastaA);
+        $b = $this->resumenVentas($desdeB, $hastaB);
+
+        $variacion = [];
+        foreach (['total', 'ventas', 'promedio'] as $clave) {
+            $variacion[$clave] = $b[$clave] > 0 ? round(($a[$clave] - $b[$clave]) / $b[$clave] * 100, 1) : null;
+        }
+
+        return ['a' => $a, 'b' => $b, 'variacion' => $variacion];
+    }
+
     /** Productos activos con su stock valorizado a precio de compra (stock × precio de compra). */
     public function inventarioValorizado(): array
     {

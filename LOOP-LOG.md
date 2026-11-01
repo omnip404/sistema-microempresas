@@ -13,3 +13,4 @@ Una línea por iteración (la escribe el loop):
 8 | 2026-10-31 21:20 | L08 | HECHA | 57/57 | git log: "L08: Bitácora" | Pantalla de solo lectura con filtros usuario/tabla/fechas, 25 por página, detalle legible; INGRESO y SALIDA desde LoginController
 9 | 2026-10-31 21:23 | L09 | HECHA | 63/63 | git log: "L09: Reporte de ventas por periodo" | Reportes: ventas por día con totales, CSV (BOM, ;, coma decimal), impresión del navegador, validación de fechas; ReporteService y PeriodoRequest reutilizables
 10 | 2026-10-31 21:27 | L10 | HECHA | 72/72 | git log: "L10: Reportes de inventario" | Selector de tipo en Reportes: inventario valorizado, stock bajo, más vendidos (top 10); CSV de cada uno; 2 ciclos de prueba (orden de stock bajo)
+11 | 2026-10-31 21:30 | L11 | HECHA | 81/81 | git log: "L11: Comparación de periodos" | Comparar periodos A/B (mes actual vs anterior): total, n.º ventas, promedio y variación %, sin división entre cero, tabla accesible y gráfico --grafico

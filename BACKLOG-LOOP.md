@@ -90,7 +90,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   (stock × precio de compra, con total), stock bajo, y productos más vendidos del periodo. Cada uno con su
   exportación CSV. Pruebas de cada cálculo.
 
-- [ ] **L11 – Comparación de periodos (RF11)**
+- [x] **L11 – Comparación de periodos (RF11)**
   Criterios: pantalla "Comparar periodos" (Administrador) que compara el periodo A con el B (por defecto,
   el mes actual frente al anterior): total vendido, n.º de ventas, venta promedio y variación %. Si el
   periodo B es cero, muestra "sin datos del periodo anterior" en vez de dividir. Tabla accesible y gráfico

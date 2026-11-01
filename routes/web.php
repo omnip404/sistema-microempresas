@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\PanelController;
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/usuarios/{usuario}/desbloquear', [UsuarioController::class, 'desbloquear'])->name('usuarios.desbloquear');
         Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
         Route::get('/reportes/exportar', [ReporteController::class, 'exportar'])->name('reportes.exportar');
+        Route::get('/comparar-periodos', [ComparacionController::class, 'index'])->name('comparacion.index');
         Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
         Route::get('/compras', [CompraController::class, 'index'])->name('compras.index');
         Route::get('/compras/nueva', [CompraController::class, 'create'])->name('compras.create');
