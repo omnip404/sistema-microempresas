@@ -16,6 +16,11 @@ class MovimientoInventario extends Model
         'stock_resultante', 'referencia', 'observacion',
     ];
 
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(Usuario::class);
+    }
+
     public function producto(): BelongsTo
     {
         return $this->belongsTo(Producto::class);

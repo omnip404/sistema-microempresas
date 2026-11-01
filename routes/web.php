@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CompraController;
+use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -30,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('rol:'.Rol::ADMINISTRADOR)->group(function () {
         Route::get('/panel', [PanelController::class, 'index'])->name('panel');
         Route::resource('productos', ProductoController::class)->except('show');
+        Route::get('/productos/{producto}/movimientos', [InventarioController::class, 'movimientos'])->name('inventario.movimientos');
+        Route::get('/productos/{producto}/ajuste', [InventarioController::class, 'ajuste'])->name('inventario.ajuste');
+        Route::post('/productos/{producto}/ajuste', [InventarioController::class, 'ajustar'])->name('inventario.ajustar');
         Route::get('/compras', [CompraController::class, 'index'])->name('compras.index');
         Route::get('/compras/nueva', [CompraController::class, 'create'])->name('compras.create');
         Route::post('/compras', [CompraController::class, 'store'])->name('compras.store');

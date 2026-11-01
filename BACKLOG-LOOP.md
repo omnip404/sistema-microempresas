@@ -58,7 +58,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   editable, total en vivo con `aria-live`) y `compras.index` (listado con estado y botón Anular con
   confirmación). Solo Administrador. Usa `CompraService`. Entrada "Compras" en el menú.
 
-- [ ] **L06 – Ajustes e historial de inventario (RF08)**
+- [x] **L06 – Ajustes e historial de inventario (RF08)**
   Criterios: el Administrador registra un ajuste (sumar o restar unidades) con observación obligatoria;
   crea un movimiento AJUSTE; el stock nunca queda negativo (mensaje claro). Pantalla de historial de
   movimientos por producto (fecha, tipo, cantidad, stock resultante, referencia, usuario), paginada,

@@ -55,9 +55,14 @@
                         @endif
                     </td>
                     <td class="text-end">
-                        <a href="{{ route('productos.edit', $p) }}" class="btn btn-sm btn-secundario">
-                            Editar<span class="visually-hidden"> {{ $p->nombre }}</span>
-                        </a>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('inventario.movimientos', $p) }}" class="btn btn-sm btn-secundario">
+                                Movimientos<span class="visually-hidden"> de {{ $p->nombre }}</span>
+                            </a>
+                            <a href="{{ route('productos.edit', $p) }}" class="btn btn-sm btn-secundario">
+                                Editar<span class="visually-hidden"> {{ $p->nombre }}</span>
+                            </a>
+                        </div>
                     </td>
                 </tr>
             @empty
