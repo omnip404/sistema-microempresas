@@ -17,34 +17,51 @@ class ReporteController extends Controller
 
     public function index(PeriodoRequest $request)
     {
+        $tipo = $request->tipo();
+
         return view('reportes.index', [
+            'tipo' => $tipo,
+            'tipos' => ReporteService::TIPOS,
+            'usaPeriodo' => ReporteService::TIPOS[$tipo][1],
             'desde' => $request->desde(),
             'hasta' => $request->hasta(),
-            'reporte' => $this->reportes->ventasPorDia($request->desde(), $request->hasta()),
+            'reporte' => $this->reportes->generar($tipo, $request->desde(), $request->hasta()),
         ]);
     }
 
     public function exportar(PeriodoRequest $request): StreamedResponse
     {
-        $reporte = $this->reportes->ventasPorDia($request->desde(), $request->hasta());
+        $tipo = $request->tipo();
+        $reporte = $this->reportes->generar($tipo, $request->desde(), $request->hasta());
+        $columnas = $reporte['columnas'];
 
-        $filas = [['Fecha', 'N.º de ventas', 'Unidades', 'Total (Bs)']];
-        foreach ($reporte['filas'] as $f) {
-            $filas[] = [
-                Carbon::parse($f['fecha'])->format('d/m/Y'), $f['ventas'], $f['unidades'], $this->monto($f['total']),
-            ];
+        $filas = [array_column($columnas, 1)];
+        foreach ($reporte['filas'] as $fila) {
+            $filas[] = array_map(fn ($c) => $this->celda($fila[$c[0]], $c[2]), $columnas);
         }
-        $filas[] = ['Total', $reporte['totales']['ventas'], $reporte['totales']['unidades'], $this->monto($reporte['totales']['total'])];
 
-        $nombre = 'ventas-'.$request->desde()->toDateString().'_'.$request->hasta()->toDateString().'.csv';
+        if ($reporte['totales'] !== null) {
+            $filas[] = array_map(
+                fn ($c, $i) => $i === 0 ? 'Total' : (isset($reporte['totales'][$c[0]]) ? $this->celda($reporte['totales'][$c[0]], $c[2]) : ''),
+                $columnas, array_keys($columnas)
+            );
+        }
 
-        return $this->csv($nombre, $filas);
+        $sufijo = ReporteService::TIPOS[$tipo][1]
+            ? $request->desde()->toDateString().'_'.$request->hasta()->toDateString()
+            : now()->toDateString();
+
+        return $this->csv("{$tipo}-{$sufijo}.csv", $filas);
     }
 
-    /** Monto con coma decimal y sin separador de miles, como lo espera Excel en español. */
-    private function monto(float $valor): string
+    /** Valor tal como lo espera Excel en español: fechas d/m/Y y montos con coma decimal sin miles. */
+    private function celda(mixed $valor, string $formato): string|int
     {
-        return number_format($valor, 2, ',', '');
+        return match ($formato) {
+            'fecha' => Carbon::parse($valor)->format('d/m/Y'),
+            'monto' => number_format((float) $valor, 2, ',', ''),
+            default => $valor,
+        };
     }
 
     private function csv(string $nombre, array $filas): StreamedResponse

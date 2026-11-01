@@ -85,7 +85,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   estilos `@media print` ya ocultan el menú). Pruebas: totales correctos, cabeceras y contenido del CSV,
   validación de fechas.
 
-- [ ] **L10 – Reportes de inventario (RF09)**
+- [x] **L10 – Reportes de inventario (RF09)**
   Criterios: en la misma pantalla de Reportes, un selector de tipo de reporte: inventario actual valorizado
   (stock × precio de compra, con total), stock bajo, y productos más vendidos del periodo. Cada uno con su
   exportación CSV. Pruebas de cada cálculo.

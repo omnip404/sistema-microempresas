@@ -3,16 +3,48 @@
 namespace App\Services;
 
 use App\Models\DetalleVenta;
+use App\Models\Producto;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 /**
- * Cálculos de los reportes (RF09). Solo lee datos; la exportación CSV y la
- * pantalla usan los mismos números para que nunca difieran.
+ * Cálculos de los reportes (RF09). Solo lee datos; la pantalla y la exportación
+ * CSV usan los mismos números para que nunca difieran.
+ *
+ * Cada reporte devuelve ['filas' => [...], 'totales' => [...]|null, 'columnas' => [...]],
+ * donde cada columna es [clave, etiqueta, formato] y el formato es texto, entero, monto o fecha.
  */
 class ReporteService
 {
+    public const VENTAS = 'ventas';
+
+    public const INVENTARIO = 'inventario';
+
+    public const STOCK_BAJO = 'stock-bajo';
+
+    public const MAS_VENDIDOS = 'mas-vendidos';
+
+    /** Tipos de reporte y si usan el periodo desde-hasta. */
+    public const TIPOS = [
+        self::VENTAS => ['Ventas por día', true],
+        self::INVENTARIO => ['Inventario actual valorizado', false],
+        self::STOCK_BAJO => ['Productos con stock bajo', false],
+        self::MAS_VENDIDOS => ['Productos más vendidos', true],
+    ];
+
+    public const LIMITE_MAS_VENDIDOS = 10;
+
+    public function generar(string $tipo, Carbon $desde, Carbon $hasta): array
+    {
+        return match ($tipo) {
+            self::INVENTARIO => $this->inventarioValorizado(),
+            self::STOCK_BAJO => $this->stockBajo(),
+            self::MAS_VENDIDOS => $this->masVendidos($desde, $hasta),
+            default => $this->ventasPorDia($desde, $hasta),
+        };
+    }
+
     /**
      * Ventas REGISTRADAS del periodo, agrupadas por día.
      *
@@ -44,12 +76,104 @@ class ReporteService
         ])->values();
 
         return [
+            'columnas' => [
+                ['fecha', 'Fecha', 'fecha'],
+                ['ventas', 'N.º de ventas', 'entero'],
+                ['unidades', 'Unidades', 'entero'],
+                ['total', 'Total (Bs)', 'monto'],
+            ],
             'filas' => $filas,
             'totales' => [
                 'ventas' => $filas->sum('ventas'),
                 'unidades' => $filas->sum('unidades'),
                 'total' => (float) $filas->sum('total'),
             ],
+        ];
+    }
+
+    /** Productos activos con su stock valorizado a precio de compra (stock × precio de compra). */
+    public function inventarioValorizado(): array
+    {
+        $filas = Producto::with('categoria')->where('activo', true)->orderBy('nombre')->get()
+            ->map(fn (Producto $p) => [
+                'codigo' => $p->codigo,
+                'nombre' => $p->nombre,
+                'categoria' => $p->categoria->nombre,
+                'stock' => $p->stock,
+                'precio_compra' => (float) $p->precio_compra,
+                'valor' => round($p->stock * (float) $p->precio_compra, 2),
+            ])->values();
+
+        return [
+            'columnas' => [
+                ['codigo', 'Código', 'texto'],
+                ['nombre', 'Producto', 'texto'],
+                ['categoria', 'Categoría', 'texto'],
+                ['stock', 'Stock', 'entero'],
+                ['precio_compra', 'Precio de compra (Bs)', 'monto'],
+                ['valor', 'Valor (Bs)', 'monto'],
+            ],
+            'filas' => $filas,
+            'totales' => ['stock' => $filas->sum('stock'), 'valor' => round($filas->sum('valor'), 2)],
+        ];
+    }
+
+    /** Productos activos cuyo stock llegó al mínimo, los de menor stock primero. */
+    public function stockBajo(): array
+    {
+        $filas = Producto::with('categoria')->stockBajo()->get()
+            ->sortBy([['stock', 'asc'], ['nombre', 'asc']])
+            ->map(fn (Producto $p) => [
+                'codigo' => $p->codigo,
+                'nombre' => $p->nombre,
+                'categoria' => $p->categoria->nombre,
+                'stock' => $p->stock,
+                'stock_minimo' => $p->stock_minimo,
+            ])->values();
+
+        return [
+            'columnas' => [
+                ['codigo', 'Código', 'texto'],
+                ['nombre', 'Producto', 'texto'],
+                ['categoria', 'Categoría', 'texto'],
+                ['stock', 'Stock', 'entero'],
+                ['stock_minimo', 'Stock mínimo', 'entero'],
+            ],
+            'filas' => $filas,
+            'totales' => null,
+        ];
+    }
+
+    /** Los productos con más unidades vendidas en el periodo (solo ventas REGISTRADAS). */
+    public function masVendidos(Carbon $desde, Carbon $hasta): array
+    {
+        $filas = DetalleVenta::query()
+            ->join('ventas', 'ventas.id', '=', 'detalle_ventas.venta_id')
+            ->join('productos', 'productos.id', '=', 'detalle_ventas.producto_id')
+            ->where('ventas.estado', Venta::REGISTRADA)
+            ->whereBetween('ventas.fecha', [$desde, $hasta])
+            ->selectRaw('productos.codigo, productos.nombre, SUM(detalle_ventas.cantidad) as unidades, SUM(detalle_ventas.cantidad * detalle_ventas.precio_unitario) as total')
+            ->groupBy('productos.id', 'productos.codigo', 'productos.nombre')
+            ->orderByDesc('unidades')
+            ->orderBy('productos.nombre')
+            ->limit(self::LIMITE_MAS_VENDIDOS)
+            ->get()
+            ->map(fn ($f) => [
+                'codigo' => $f->codigo,
+                'nombre' => $f->nombre,
+                'unidades' => (int) $f->unidades,
+                'total' => round((float) $f->total, 2),
+            ])->values();
+
+        return [
+            'columnas' => [
+                ['codigo', 'Código', 'texto'],
+                ['nombre', 'Producto', 'texto'],
+                ['unidades', 'Unidades vendidas', 'entero'],
+                ['total', 'Total vendido (Bs)', 'monto'],
+            ],
+            'filas' => $filas,
+            'totales' => null,
         ];
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Services\ReporteService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
- * Periodo "desde - hasta" de los reportes (RF09). Por defecto, el mes actual hasta hoy.
+ * Tipo de reporte y periodo "desde - hasta" (RF09). Por defecto, ventas del mes actual hasta hoy.
  */
 class PeriodoRequest extends FormRequest
 {
@@ -18,6 +20,7 @@ class PeriodoRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
+            'tipo' => $this->input('tipo') ?: ReporteService::VENTAS,
             'desde' => $this->input('desde') ?: now()->startOfMonth()->toDateString(),
             'hasta' => $this->input('hasta') ?: now()->toDateString(),
         ]);
@@ -26,6 +29,7 @@ class PeriodoRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'tipo' => ['required', Rule::in(array_keys(ReporteService::TIPOS))],
             'desde' => ['required', 'date'],
             'hasta' => ['required', 'date', 'after_or_equal:desde'],
         ];
@@ -33,12 +37,17 @@ class PeriodoRequest extends FormRequest
 
     public function attributes(): array
     {
-        return ['desde' => 'fecha desde', 'hasta' => 'fecha hasta'];
+        return ['tipo' => 'tipo de reporte', 'desde' => 'fecha desde', 'hasta' => 'fecha hasta'];
     }
 
     public function messages(): array
     {
         return ['hasta.after_or_equal' => 'La fecha "hasta" no puede ser anterior a la fecha "desde".'];
+    }
+
+    public function tipo(): string
+    {
+        return $this->validated('tipo');
     }
 
     public function desde(): Carbon
