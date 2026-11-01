@@ -35,7 +35,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   tiene cada una. Nombre obligatorio, único, máximo 60. No se puede eliminar una categoría con productos
   (mensaje claro). Entrada "Categorías" en el menú.
 
-- [ ] **L02 – Proveedores (RF04)**
+- [x] **L02 – Proveedores (RF04)**
   Criterios: CRUD solo para Administrador, con búsqueda por nombre o NIT. Campos: nombre (obligatorio),
   NIT (opcional, único), teléfono, dirección, activo. Eliminar = baja lógica. Proveedor se registra en la
   bitácora. Entrada "Proveedores" en el menú.

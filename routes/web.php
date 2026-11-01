@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\VentaController;
 use App\Models\Rol;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/panel', [PanelController::class, 'index'])->name('panel');
         Route::resource('productos', ProductoController::class)->except('show');
         Route::resource('categorias', CategoriaController::class)->except('show');
+        Route::resource('proveedores', ProveedorController::class)->except('show')
+            ->parameters(['proveedores' => 'proveedor']);
         Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
         Route::post('/ventas/{venta}/anular', [VentaController::class, 'anular'])->name('ventas.anular');
     });

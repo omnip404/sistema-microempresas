@@ -18,6 +18,7 @@
         $esAdmin ? ['ventas.index', 'Ventas', 'ventas.index'] : null,
         $esAdmin ? ['productos.index', 'Productos', 'productos.*'] : null,
         $esAdmin ? ['categorias.index', 'Categorías', 'categorias.*'] : null,
+        $esAdmin ? ['proveedores.index', 'Proveedores', 'proveedores.*'] : null,
     ]);
 @endphp
 
