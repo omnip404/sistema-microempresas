@@ -66,7 +66,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
 
 ## Sprint 4
 
-- [ ] **L07 – Gestión de usuarios (RF02)**
+- [x] **L07 – Gestión de usuarios (RF02)**
   Criterios: solo Administrador. Crear (nombre, correo único, rol, contraseña de 8 o más caracteres),
   editar (la contraseña solo cambia si se escribe), activar o desactivar, y botón "Desbloquear" que pone en
   cero `intentos_fallidos` y `bloqueado_hasta`. Un administrador no puede desactivarse a sí mismo.

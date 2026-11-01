@@ -9,3 +9,4 @@ Una línea por iteración (la escribe el loop):
 4 | 2026-10-31 21:08 | L04 | HECHA | 33/33 | git log: "L04: Servicio de compras" | CompraService registrar/anular en transacción; anulación imposible probada; 2 ciclos de prueba
 5 | 2026-10-31 21:11 | L05 | HECHA | 37/37 | git log: "L05: Pantallas de compras" | compras.index/create/store/anular solo admin, carrito con costo editable y total aria-live, menú
 6 | 2026-10-31 21:14 | L06 | HECHA | 43/43 | git log: "L06: Ajustes e historial de inventario" | InventarioService.ajustar (AJUSTE, nunca negativo), historial paginado por producto enlazado desde productos
+7 | 2026-10-31 21:17 | L07 | HECHA | 50/50 | git log: "L07: Gestión de usuarios" | CRUD usuarios admin, contraseña opcional al editar, activar/desactivar, desbloquear, sin autodesactivación, menú
