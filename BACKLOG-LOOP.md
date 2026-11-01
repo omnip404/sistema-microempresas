@@ -72,7 +72,7 @@ Una tarea por iteración, en este orden. Cada tarea termina con `php artisan tes
   cero `intentos_fallidos` y `bloqueado_hasta`. Un administrador no puede desactivarse a sí mismo.
   Prueba que un usuario desactivado no puede iniciar sesión.
 
-- [ ] **L08 – Bitácora (RF12)**
+- [x] **L08 – Bitácora (RF12)**
   Criterios: pantalla de solo lectura para el Administrador, con filtros por usuario, tabla y rango de
   fechas, 25 filas por página, y el detalle JSON mostrado de forma legible. Registrar también INGRESO y
   SALIDA del sistema desde `LoginController`.

@@ -22,6 +22,7 @@
         $esAdmin ? ['proveedores.index', 'Proveedores', 'proveedores.*'] : null,
         $esAdmin ? ['compras.index', 'Compras', 'compras.*'] : null,
         $esAdmin ? ['usuarios.index', 'Usuarios', 'usuarios.*'] : null,
+        $esAdmin ? ['bitacora.index', 'Bitácora', 'bitacora.*'] : null,
     ]);
 @endphp
 

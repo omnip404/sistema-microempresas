@@ -10,3 +10,4 @@ Una línea por iteración (la escribe el loop):
 5 | 2026-10-31 21:11 | L05 | HECHA | 37/37 | git log: "L05: Pantallas de compras" | compras.index/create/store/anular solo admin, carrito con costo editable y total aria-live, menú
 6 | 2026-10-31 21:14 | L06 | HECHA | 43/43 | git log: "L06: Ajustes e historial de inventario" | InventarioService.ajustar (AJUSTE, nunca negativo), historial paginado por producto enlazado desde productos
 7 | 2026-10-31 21:17 | L07 | HECHA | 50/50 | git log: "L07: Gestión de usuarios" | CRUD usuarios admin, contraseña opcional al editar, activar/desactivar, desbloquear, sin autodesactivación, menú
+8 | 2026-10-31 21:20 | L08 | HECHA | 57/57 | git log: "L08: Bitácora" | Pantalla de solo lectura con filtros usuario/tabla/fechas, 25 por página, detalle legible; INGRESO y SALIDA desde LoginController

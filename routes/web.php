@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CompraController;
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('usuarios', UsuarioController::class)->except(['show', 'destroy']);
         Route::post('/usuarios/{usuario}/estado', [UsuarioController::class, 'cambiarEstado'])->name('usuarios.estado');
         Route::post('/usuarios/{usuario}/desbloquear', [UsuarioController::class, 'desbloquear'])->name('usuarios.desbloquear');
+        Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
         Route::get('/compras', [CompraController::class, 'index'])->name('compras.index');
         Route::get('/compras/nueva', [CompraController::class, 'create'])->name('compras.create');
         Route::post('/compras', [CompraController::class, 'store'])->name('compras.store');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bitacora;
 use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
@@ -47,6 +48,7 @@ class LoginController extends Controller
 
         $usuario->forceFill(['intentos_fallidos' => 0, 'bloqueado_hasta' => null])->save();
         $request->session()->regenerate();
+        $this->registrarEnBitacora('INGRESO', $usuario, $request);
 
         $destino = $usuario->tieneRol(Rol::ADMINISTRADOR) ? 'panel' : 'ventas.create';
 
@@ -55,11 +57,27 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        if ($usuario = $request->user()) {
+            $this->registrarEnBitacora('SALIDA', $usuario, $request);
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    /** Ingreso y salida no son cambios de datos, por eso no los registra el observador. */
+    private function registrarEnBitacora(string $accion, Usuario $usuario, Request $request): void
+    {
+        Bitacora::create([
+            'usuario_id' => $usuario->id,
+            'accion' => $accion,
+            'tabla' => $usuario->getTable(),
+            'registro_id' => $usuario->id,
+            'ip' => $request->ip(),
+        ]);
     }
 
     private function registrarIntentoFallido(?Usuario $usuario): void
