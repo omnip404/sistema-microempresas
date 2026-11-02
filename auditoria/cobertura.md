@@ -60,9 +60,10 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   `Referrer-Policy`); páginas de error que muestren detalles. NO leer `.env`.
   REVISADO: `.env.example` y README, config/session.php, app.php (key, cipher, debug), auth.php, hashing, database.php, logging.php, búsqueda de Log::/dd/phpinfo/debugbar/telescope (0), cabeceras de seguridad y bootstrap/app.php, trustProxies, resources/views/errors (ausente, solo observado), /up y welcome, public/ (sin archivos sensibles), .gitignore, seeders y database/sql. `.env` no se leyó. Candidatos 1 (confirmado y corregido), recomendaciones 3, notas 5.
 
-- [ ] **S10 – Dependencias y cadena de suministro (A03)**
+- [x] **S10 – Dependencias y cadena de suministro (A03)**
   `composer audit`; scripts de CDN sin versión exacta ni `integrity` (Bootstrap, Chart.js, Google Fonts);
   paquetes de desarrollo cargados en producción.
+  REVISADO: composer.json y composer.lock (versiones, require-dev, scripts sin descargas remotas, allow-plugins, minimum-stability, sin repositories), package.json y vite, README, vistas con CDN (4 recursos de jsDelivr, Fonts, welcome), public/. LIMITACIÓN: `composer audit` NO se ejecutó (sin internet): las versiones quedan pendientes de auditar. Candidatos 1 (confirmado, no corregible sin internet), notas 5, recomendación 1.
 
 - [ ] **S11 – Registro y alertas (A09)**
   Qué acciones críticas quedan en la bitácora (intentos fallidos y bloqueos incluidos); que no se guarden

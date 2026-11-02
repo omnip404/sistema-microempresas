@@ -12,3 +12,4 @@
 8 | 2026-11-01 00:00 | S07 | candidatos 2 / confirmados 2 / corregidos 2 | 93/93 | 93a6921 | 5 notas; SEC-03 absorbida por SEC-33/34
 9 | 2026-11-01 00:00 | S08 | candidatos 2 / confirmados 2 / corregidos 2 | 95/95 | ca73100 | 2 notas; fórmulas CSV y escape de fputcsv
 10 | 2026-11-01 00:00 | S09 | candidatos 1 / confirmados 1 / corregidos 1 | 97/97 | beb8b18 | 3 recomendaciones (cabeceras, .env.example/README, DocumentRoot), 5 notas
+11 | 2026-11-01 00:00 | S10 | candidatos 1 / confirmados 1 / corregidos 0 | 97/97 (1 omitida a propósito) | - | SEC-52 pendiente (SRI necesita internet); composer audit sin ejecutar
