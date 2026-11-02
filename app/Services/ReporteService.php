@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Compra;
+use App\Models\DetalleCompra;
 use App\Models\DetalleVenta;
 use App\Models\Producto;
 use App\Models\Venta;
@@ -25,22 +27,26 @@ class ReporteService
 
     public const MAS_VENDIDOS = 'mas-vendidos';
 
+    public const COMPRAS = 'compras';
+
     /** Tipos de reporte y si usan el periodo desde-hasta. */
     public const TIPOS = [
         self::VENTAS => ['Ventas por día', true],
         self::INVENTARIO => ['Inventario actual valorizado', false],
         self::STOCK_BAJO => ['Productos con stock bajo', false],
         self::MAS_VENDIDOS => ['Productos más vendidos', true],
+        self::COMPRAS => ['Compras por periodo', true],
     ];
 
     public const LIMITE_MAS_VENDIDOS = 10;
 
-    public function generar(string $tipo, Carbon $desde, Carbon $hasta): array
+    public function generar(string $tipo, Carbon $desde, Carbon $hasta, ?int $proveedorId = null): array
     {
         return match ($tipo) {
             self::INVENTARIO => $this->inventarioValorizado(),
             self::STOCK_BAJO => $this->stockBajo(),
             self::MAS_VENDIDOS => $this->masVendidos($desde, $hasta),
+            self::COMPRAS => $this->comprasPorPeriodo($desde, $hasta, $proveedorId),
             default => $this->ventasPorDia($desde, $hasta),
         };
     }
@@ -178,6 +184,51 @@ class ReporteService
             ],
             'filas' => $filas,
             'totales' => null,
+        ];
+    }
+
+    /**
+     * Compras REGISTRADAS del periodo (RF09.2), una fila por compra, con filtro opcional por proveedor.
+     * Las anuladas no se incluyen.
+     */
+    public function comprasPorPeriodo(Carbon $desde, Carbon $hasta, ?int $proveedorId = null): array
+    {
+        $unidades = DetalleCompra::query()
+            ->join('compras', 'compras.id', '=', 'detalle_compras.compra_id')
+            ->where('compras.estado', Compra::REGISTRADA)
+            ->whereBetween('compras.fecha', [$desde, $hasta])
+            ->when($proveedorId, fn ($q) => $q->where('compras.proveedor_id', $proveedorId))
+            ->selectRaw('detalle_compras.compra_id, SUM(detalle_compras.cantidad) as unidades')
+            ->groupBy('detalle_compras.compra_id')
+            ->pluck('unidades', 'compra_id');
+
+        $filas = Compra::with('proveedor')
+            ->where('estado', Compra::REGISTRADA)
+            ->whereBetween('fecha', [$desde, $hasta])
+            ->when($proveedorId, fn ($q) => $q->where('proveedor_id', $proveedorId))
+            ->orderBy('fecha')->orderBy('id')
+            ->get()
+            ->map(fn (Compra $c) => [
+                'fecha' => $c->fecha->toDateString(),
+                'nro_comprobante' => $c->nro_comprobante ?? '',
+                'proveedor' => $c->proveedor->nombre,
+                'unidades' => (int) ($unidades[$c->id] ?? 0),
+                'total' => (float) $c->total,
+            ])->values();
+
+        return [
+            'columnas' => [
+                ['fecha', 'Fecha', 'fecha'],
+                ['nro_comprobante', 'N.º de comprobante', 'texto'],
+                ['proveedor', 'Proveedor', 'texto'],
+                ['unidades', 'Unidades', 'entero'],
+                ['total', 'Total (Bs)', 'monto'],
+            ],
+            'filas' => $filas,
+            'totales' => [
+                'unidades' => $filas->sum('unidades'),
+                'total' => round((float) $filas->sum('total'), 2),
+            ],
         ];
     }
 

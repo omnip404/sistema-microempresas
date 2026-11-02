@@ -6,3 +6,4 @@ Una línea por iteración (la escribe el loop):
 (Columna commit: el hash no puede ir dentro de su propio commit; se escribe «git log Lxx» y el hash real está en `git log --oneline`.)
 
 1 | 2026-11-01 20:58 | L13 | HECHA | 95/95 | git log «L13» | Comprobante imprimible, enlace tras vender y en listado; 6 pruebas nuevas
+2 | 2026-11-01 21:00 | L14 | HECHA | 101/101 | git log «L14» | Reporte «Compras por periodo» con filtro de proveedor y CSV; 6 pruebas nuevas

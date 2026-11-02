@@ -32,12 +32,13 @@ class PeriodoRequest extends FormRequest
             'tipo' => ['required', Rule::in(array_keys(ReporteService::TIPOS))],
             'desde' => ['required', 'date'],
             'hasta' => ['required', 'date', 'after_or_equal:desde'],
+            'proveedor_id' => ['nullable', 'integer', 'exists:proveedores,id'],
         ];
     }
 
     public function attributes(): array
     {
-        return ['tipo' => 'tipo de reporte', 'desde' => 'fecha desde', 'hasta' => 'fecha hasta'];
+        return ['tipo' => 'tipo de reporte', 'desde' => 'fecha desde', 'hasta' => 'fecha hasta', 'proveedor_id' => 'proveedor'];
     }
 
     public function messages(): array
@@ -48,6 +49,13 @@ class PeriodoRequest extends FormRequest
     public function tipo(): string
     {
         return $this->validated('tipo');
+    }
+
+    public function proveedorId(): ?int
+    {
+        $id = $this->validated('proveedor_id');
+
+        return $id ? (int) $id : null;
     }
 
     public function desde(): Carbon
