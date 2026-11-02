@@ -9,6 +9,7 @@ use App\Models\Producto;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Cálculos de los reportes (RF09). Solo lee datos; la pantalla y la exportación
@@ -113,6 +114,55 @@ class ReporteService
         $total = (float) $resumen->total;
 
         return ['total' => $total, 'ventas' => $ventas, 'promedio' => $ventas > 0 ? round($total / $ventas, 2) : 0.0];
+    }
+
+    /**
+     * Ganancia estimada (RF10.1): Σ cantidad × (precio de venta − precio de compra actual del producto)
+     * de las ventas REGISTRADAS del periodo. Es una estimación porque el costo es el vigente hoy.
+     */
+    public function gananciaEstimada(Carbon $desde, Carbon $hasta): float
+    {
+        $ganancia = DetalleVenta::query()
+            ->join('ventas', 'ventas.id', '=', 'detalle_ventas.venta_id')
+            ->join('productos', 'productos.id', '=', 'detalle_ventas.producto_id')
+            ->where('ventas.estado', Venta::REGISTRADA)
+            ->whereBetween('ventas.fecha', [$desde, $hasta])
+            ->sum(DB::raw('detalle_ventas.cantidad * (detalle_ventas.precio_unitario - productos.precio_compra)'));
+
+        return round((float) $ganancia, 2);
+    }
+
+    /** Total vendido por día en los últimos $dias días (hoy incluido), con ceros en los días sin ventas. */
+    public function ventasUltimosDias(int $dias): array
+    {
+        $desde = today()->subDays($dias - 1);
+
+        $porDia = Venta::where('estado', Venta::REGISTRADA)
+            ->where('fecha', '>=', $desde)
+            ->selectRaw('DATE(fecha) as dia, SUM(total) as total')
+            ->groupBy('dia')
+            ->pluck('total', 'dia');
+
+        $fechas = collect(range($dias - 1, 0))->map(fn ($n) => today()->subDays($n)->toDateString());
+
+        return [
+            'etiquetas' => $fechas->map(fn ($d) => date('d/m', strtotime($d))),
+            'valores' => $fechas->map(fn ($d) => (float) ($porDia[$d] ?? 0)),
+        ];
+    }
+
+    /** Los $limite productos con más unidades vendidas (ventas REGISTRADAS de todo el historial). */
+    public function productosMasVendidos(int $limite)
+    {
+        return DetalleVenta::query()
+            ->join('ventas', 'ventas.id', '=', 'detalle_ventas.venta_id')
+            ->join('productos', 'productos.id', '=', 'detalle_ventas.producto_id')
+            ->where('ventas.estado', Venta::REGISTRADA)
+            ->select('productos.nombre', DB::raw('SUM(detalle_ventas.cantidad) as unidades'))
+            ->groupBy('productos.nombre')
+            ->orderByDesc('unidades')
+            ->limit($limite)
+            ->get();
     }
 
     /**

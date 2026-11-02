@@ -8,3 +8,4 @@ Una línea por iteración (la escribe el loop):
 1 | 2026-11-01 20:58 | L13 | HECHA | 95/95 | git log «L13» | Comprobante imprimible, enlace tras vender y en listado; 6 pruebas nuevas
 2 | 2026-11-01 21:00 | L14 | HECHA | 101/101 | git log «L14» | Reporte «Compras por periodo» con filtro de proveedor y CSV; 6 pruebas nuevas
 3 | 2026-11-01 21:02 | L15 | HECHA | 105/105 | git log «L15» | Encabezado solo-impresión (negocio, reporte, periodo, emisión) y @page con counter(page); 4 pruebas nuevas
+4 | 2026-11-01 21:05 | L16 | HECHA | 111/111 | git log «L16» | Ganancia estimada del mes en el panel (reemplaza «venta promedio»); consultas del panel movidas a ReporteService; 6 pruebas nuevas

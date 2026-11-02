@@ -13,8 +13,9 @@
         <p class="kpi-valor mb-0">Bs {{ number_format($ventasMes, 2, ',', '.') }}</p>
     </div></div>
     <div class="col-6 col-xl-3"><div class="tarjeta p-3 h-100">
-        <p class="kpi-etiqueta mb-1">Venta promedio del mes</p>
-        <p class="kpi-valor mb-0">Bs {{ number_format($ticketPromedio, 2, ',', '.') }}</p>
+        <p class="kpi-etiqueta mb-1">Ganancia estimada del mes</p>
+        <p class="kpi-valor mb-0">Bs {{ number_format($gananciaMes, 2, ',', '.') }}</p>
+        <p class="small text-secundario mb-0">Estimada: ventas menos el precio de compra actual de cada producto.</p>
     </div></div>
     <div class="col-6 col-xl-3"><div class="tarjeta p-3 h-100">
         <p class="kpi-etiqueta mb-1">Productos con stock bajo</p>
