@@ -11,10 +11,11 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   compartido de todas las vueltas y subagentes: no se vuelve a explorar el proyecto completo.
   REVISADO: 47 rutas con su middleware, VerificarRol, LoginController, bootstrap/app.php, CDN y selectRaw ubicados.
 
-- [ ] **S01 – Control de acceso (A01)**
+- [x] **S01 – Control de acceso (A01)**
   Cada ruta con su middleware (`auth`, `rol:Administrador`); qué puede hacer el Vendedor por URL directa;
   acciones destructivas (anular, eliminar, desbloquear, desactivar) solo para Administrador; `usuario_id`
   tomado de la sesión y nunca del formulario; un Administrador no puede quitarse su propio rol o acceso.
+  REVISADO: routes/web.php (todas las rutas con su middleware), VerificarRol, acciones destructivas solo en el grupo Administrador, usuario_id desde la sesión en Venta/Compra/Inventario/BitacoraObserver, autoprotección en UsuarioController/UsuarioRequest, mass assignment de Usuario/Venta, route-model binding sin datos por propietario, login con `activo`. Candidatos 2 (ambos confirmados y corregidos), notas 3.
 
 - [ ] **S02 – Autenticación y sesión (A07)**
   Bloqueo tras 3 intentos (¿se puede evadir con mayúsculas en el correo o espacios?), `throttle` del login,
