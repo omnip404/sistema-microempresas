@@ -35,6 +35,12 @@ class VentaService
                 // Bloquea la fila para que dos ventas simultáneas no vendan el mismo stock.
                 $producto = Producto::whereKey($item['producto_id'])->lockForUpdate()->firstOrFail();
 
+                if (! $producto->activo) {
+                    throw ValidationException::withMessages([
+                        'items' => "El producto {$producto->nombre} está dado de baja y no se puede vender.",
+                    ]);
+                }
+
                 if ($item['cantidad'] > $producto->stock) {
                     throw ValidationException::withMessages([
                         'items' => "Stock insuficiente de {$producto->nombre}: disponible {$producto->stock}.",
