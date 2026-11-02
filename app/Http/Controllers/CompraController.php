@@ -7,6 +7,7 @@ use App\Models\Producto;
 use App\Models\Proveedor;
 use App\Services\CompraService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /**
  * Registro y anulación de compras a proveedores (RF07). La lógica de negocio
@@ -34,10 +35,10 @@ class CompraController extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'proveedor_id' => ['required', 'exists:proveedores,id'],
+            'proveedor_id' => ['required', 'integer', Rule::exists('proveedores', 'id')->where('activo', true)],
             'nro_comprobante' => ['nullable', 'string', 'max:30'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.producto_id' => ['required', 'distinct', 'exists:productos,id'],
+            'items.*.producto_id' => ['required', 'integer', 'distinct', Rule::exists('productos', 'id')->where('activo', true)],
             'items.*.cantidad' => ['required', 'integer', 'min:1'],
             'items.*.costo_unitario' => ['required', 'numeric', 'min:0'],
         ], [
