@@ -28,10 +28,11 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   orden tomados de la URL; comodines `%` y `_` en búsquedas.
   REVISADO: selectRaw/DB::raw de ReporteService y PanelController (SQL fijo, fechas por binding), ausencia de whereRaw/orderByRaw/DB::select, orderBy/groupBy fijos, parámetro tipo (Rule::in), fechas de PeriodoRequest/ComparacionRequest/Bitácora, LIKE con binding en Cliente/Proveedor/Producto, paginación fija. Candidatos 0, notas 3.
 
-- [ ] **S04 – XSS y salida (A05)**
+- [x] **S04 – XSS y salida (A05)**
   Uso de `{!! !!}`; JavaScript que arma HTML (carritos de ventas y compras, gráficos); `@json` dentro de
   `<script>`; detalle JSON de la bitácora; mensajes flash con datos del usuario; atributos `href` armados con
   datos.
+  REVISADO: 0 usos de `{!! !!}` e innerHTML; carritos con createElement/textContent; @json en panel y comparación (flags seguros); detalle JSON de la bitácora con `{{ }}`; mensajes flash; atributos href/onclick/data-*; url()->previous y fullUrl (0 usos); back()/intended; vistas de impresión; welcome y partials. Candidatos 0, notas 2.
 
 - [ ] **S05 – CSRF y métodos HTTP (A01)**
   `@csrf` en todos los formularios POST/PUT/DELETE; rutas GET que cambian datos; cierre de sesión por POST.

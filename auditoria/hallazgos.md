@@ -24,3 +24,5 @@ Nivel = probabilidad × impacto (1–3 cada uno): 1–2 bajo · 3–4 medio · 6
 | SEC-16 | S03 | Comodines `%` y `_` de la búsqueda no se escapan en el LIKE (con binding: sin inyección, solo cambia qué filas coinciden) | A05 | Vendedor/Admin | 1 | 1 | 1 bajo | NOTA | - | - |
 | SEC-17 | S03 | `buscar` no se valida como cadena: `?buscar[]=x` provoca un error 500 en Clientes (alcanzable por Vendedor), Proveedores y Productos | A10 | Vendedor/Admin | 2 | 1 | 2 bajo | NOTA (se retoma en S12) | - | - |
 | SEC-18 | S03 | Reportes y comparación aceptan rangos de fechas sin tope (0001-01-01 a 9999-12-31) | A06 | Administrador | 1 | 1 | 1 bajo | NOTA | - | - |
+| SEC-19 | S04 | Chart.js (`chart.js@4`) y Bootstrap/Fonts por CDN sin versión exacta (Chart.js) ni `integrity`/`crossorigin` (SRI) | A03 | Cadena de suministro | 1 | 3 | 3 medio | NOTA (se revisa en S10) | - | - |
+| SEC-20 | S04 | Sin Content-Security-Policy ni otras cabeceras de seguridad: hoy no hay vector de XSS (0 `{!! !!}`, 0 innerHTML), la CSP sería la segunda defensa | A02 | - | 1 | 2 | 2 bajo | NOTA (se revisa en S09) | - | - |
