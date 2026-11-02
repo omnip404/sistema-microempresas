@@ -21,7 +21,7 @@ léelos siempre al empezar, aunque creas recordar el estado.
 ## 3. Implementar
 
 - Cumple los **criterios de aceptación** de la tarea, ni más ni menos (KISS, YAGNI).
-- Sigue las convenciones de `BACKLOG-LOOP-2.md` → sección "Convenciones del proyecto".
+- Sigue las convenciones de `BACKLOG-LOOP.md` (loop 1) → sección "Convenciones del proyecto".
 - Escribe las pruebas Feature que pide la tarea en `tests/Feature/`.
 - Presupuesto: como máximo **3 ciclos** de "ejecutar pruebas → corregir". No pruebes la misma
   corrección dos veces; si un enfoque falla dos veces, cambia de enfoque o bloquea la tarea.
