@@ -58,6 +58,16 @@
     <p class="form-text mb-0 mt-2" id="ayuda-periodo">Las fechas se aplican a «Ventas por día», «Productos más vendidos» y «Compras por periodo» (este último admite filtrar por proveedor); los demás reportes muestran la situación actual.</p>
 </form>
 
+{{-- Encabezado que solo aparece al imprimir o guardar como PDF (RF09.5) --}}
+<header class="encabezado-impresion d-none d-print-block mb-3">
+    <p class="h4 mb-0">{{ config('app.name') }}</p>
+    <p class="h5 mb-0">{{ $tipos[$tipo][0] }}</p>
+    <p class="mb-0">
+        @if ($usaPeriodo)Periodo: del {{ $desde->format('d/m/Y') }} al {{ $hasta->format('d/m/Y') }}@else Situación al {{ now()->format('d/m/Y') }}@endif
+    </p>
+    <p class="mb-0">Emitido el {{ now()->format('d/m/Y H:i') }}</p>
+</header>
+
 <h2 class="h4">
     {{ $tipos[$tipo][0] }}@if ($usaPeriodo) del {{ $desde->format('d/m/Y') }} al {{ $hasta->format('d/m/Y') }}@else al {{ now()->format('d/m/Y') }}@endif
 </h2>

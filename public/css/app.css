@@ -160,3 +160,9 @@ a { color: var(--primario); }
     .lateral, .barra-movil, .accesibilidad, .saltar, form, .btn { display: none !important; }
     body { background: #fff; }
 }
+
+/* Numeración de páginas al imprimir (RF09.5) */
+@page {
+    margin: 18mm 15mm;
+    @bottom-center { content: "Página " counter(page) " de " counter(pages); font-size: 10pt; }
+}
