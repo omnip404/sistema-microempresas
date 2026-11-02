@@ -19,13 +19,15 @@ class Sec10aTest extends TestCase
 
     public function test_recursos_de_cdn_llevan_sri_y_version_exacta(): void
     {
-        $this->markTestSkipped('SEC pendiente: requiere hashes SRI calculados con acceso a internet');
-
         $this->seed(DatabaseSeeder::class);
         $admin = Usuario::where('email', 'admin@microempresa.test')->firstOrFail();
 
-        foreach (['/panel', '/comparar-periodos', '/usuarios'] as $ruta) {
-            $html = $this->actingAs($admin)->get($ruta)->assertOk()->getContent();
+        foreach (['/login', '/panel', '/comparar-periodos', '/usuarios'] as $ruta) {
+            $html = $ruta === '/login'
+                ? $this->get($ruta)->assertOk()->getContent()
+                : $this->actingAs($admin)->get($ruta)->assertOk()->getContent();
+
+            $this->assertDoesNotMatchRegularExpression('/cdn\.jsdelivr\.net\/npm\/[\w.-]+@\d+"/', $html, "$ruta: recurso con versión flotante");
 
             preg_match_all('/<(script|link)\b[^>]*(?:src|href)="https:\/\/cdn\.jsdelivr\.net[^"]*"[^>]*>/i', $html, $etiquetas);
             $this->assertNotEmpty($etiquetas[0], "$ruta no carga recursos de jsDelivr (¿se pasaron a copia local?)");
