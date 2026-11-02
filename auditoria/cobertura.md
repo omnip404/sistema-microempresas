@@ -54,10 +54,11 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   en nombres de productos, clientes o categorías); nombre del archivo en la cabecera; fechas de los filtros.
   REVISADO: flujo completo de exportar/celda/csv, columnas que pasan o no por celda() (solo fecha y monto se formateaban), los 4 reportes de ReporteService, PeriodoRequest, ProductoRequest y CategoriaRequest, prefijado de fórmulas y montos negativos, fputcsv y su carácter de escape, BOM/UTF-8, Content-Disposition/Content-Type, parámetro tipo, vista de impresión. Candidatos 2 (ambos confirmados y corregidos), notas 2. El candidato conocido (celda) quedó confirmado.
 
-- [ ] **S09 – Configuración y cabeceras (A02)**
+- [x] **S09 – Configuración y cabeceras (A02)**
   `APP_DEBUG` y `APP_ENV` en `.env.example`; cookies de sesión (`http_only`, `same_site`, `secure`);
   cabeceras de seguridad (CSP, `X-Frame-Options` o `frame-ancestors`, `X-Content-Type-Options`,
   `Referrer-Policy`); páginas de error que muestren detalles. NO leer `.env`.
+  REVISADO: `.env.example` y README, config/session.php, app.php (key, cipher, debug), auth.php, hashing, database.php, logging.php, búsqueda de Log::/dd/phpinfo/debugbar/telescope (0), cabeceras de seguridad y bootstrap/app.php, trustProxies, resources/views/errors (ausente, solo observado), /up y welcome, public/ (sin archivos sensibles), .gitignore, seeders y database/sql. `.env` no se leyó. Candidatos 1 (confirmado y corregido), recomendaciones 3, notas 5.
 
 - [ ] **S10 – Dependencias y cadena de suministro (A03)**
   `composer audit`; scripts de CDN sin versión exacta ni `integrity` (Bootstrap, Chart.js, Google Fonts);
