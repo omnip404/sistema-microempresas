@@ -47,6 +47,11 @@ Usuarios de prueba (creados por el seeder): `admin@microempresa.test` y `vendedo
 
 El script SQL equivalente está en `database/sql/microempresa_db.sql`.
 
+### Sesión de 15 minutos (RNF05)
+
+La sesión se cierra tras 15 minutos de inactividad: `SESSION_LIFETIME=15` en `.env.example` y valor por defecto 15 en `config/session.php`.
+Si ya tienes un `.env` creado antes de este cambio, edita ahí `SESSION_LIFETIME` (o bórralo para usar el valor por defecto) y ejecuta `php artisan config:clear`.
+
 ## Pruebas
 
 ```
