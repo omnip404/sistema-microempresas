@@ -65,9 +65,10 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   paquetes de desarrollo cargados en producción.
   REVISADO: composer.json y composer.lock (versiones, require-dev, scripts sin descargas remotas, allow-plugins, minimum-stability, sin repositories), package.json y vite, README, vistas con CDN (4 recursos de jsDelivr, Fonts, welcome), public/. LIMITACIÓN: `composer audit` NO se ejecutó (sin internet): las versiones quedan pendientes de auditar. Candidatos 1 (confirmado, no corregible sin internet), notas 5, recomendación 1.
 
-- [ ] **S11 – Registro y alertas (A09)**
+- [x] **S11 – Registro y alertas (A09)**
   Qué acciones críticas quedan en la bitácora (intentos fallidos y bloqueos incluidos); que no se guarden
   contraseñas ni tokens; quién puede ver la bitácora; inyección de saltos de línea en registros.
+  REVISADO: modelos observados (Producto, Categoria, Proveedor, Cliente, Venta, Compra, Usuario), anulaciones, cambio de rol, activar/desactivar y desbloqueo, ajustes de inventario, eliminaciones, exportación CSV, intentos fallidos y bloqueos, campos sensibles en el detalle, origen de usuario_id, acceso solo Administrador, filtros y paginación, inmutabilidad, saltos de línea (vista con `{{ }}` y nombres con max), IP, cambios por consola, zona horaria, alertas. Candidatos 1 (confirmado y corregido), notas 6.
 
 - [ ] **S12 – Errores y condiciones excepcionales (A10)**
   Excepciones sin capturar que devuelvan 500 con datos; fechas inválidas en filtros; división entre cero en
