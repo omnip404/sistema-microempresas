@@ -8,6 +8,7 @@ use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -41,7 +42,7 @@ class LoginController extends Controller
         }
 
         if (! Auth::attempt($credenciales + ['activo' => true])) {
-            $this->registrarIntentoFallido($usuario);
+            $this->registrarIntentoFallido($usuario, $credenciales['email'], $request);
 
             throw ValidationException::withMessages(['email' => self::MENSAJE_FALLO]);
         }
@@ -80,8 +81,11 @@ class LoginController extends Controller
         ]);
     }
 
-    private function registrarIntentoFallido(?Usuario $usuario): void
+    private function registrarIntentoFallido(?Usuario $usuario, string $email, Request $request): void
     {
+        // Rastro de detección: correo intentado e IP, nunca la contraseña
+        $this->registrarFallo('LOGIN_FALLIDO', $usuario, $email, $request);
+
         if (! $usuario) {
             return;
         }
@@ -95,6 +99,20 @@ class LoginController extends Controller
                 'bloqueado_hasta' => now()->addMinutes(self::MINUTOS_BLOQUEO),
                 'intentos_fallidos' => 0,
             ])->save();
+
+            $this->registrarFallo('BLOQUEO', $usuario, $email, $request);
         }
+    }
+
+    private function registrarFallo(string $accion, ?Usuario $usuario, string $email, Request $request): void
+    {
+        Bitacora::create([
+            'usuario_id' => null,
+            'accion' => $accion,
+            'tabla' => 'usuarios',
+            'registro_id' => $usuario?->id,
+            'detalle' => ['email' => Str::limit($email, 120, '')],
+            'ip' => $request->ip(),
+        ]);
     }
 }
