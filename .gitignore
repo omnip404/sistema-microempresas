@@ -26,3 +26,4 @@ Thumbs.db
 # Permisos personales de Claude Code (no se comparten)
 /.claude/settings.local.json
 /.claude/worktrees/
+/storage/respaldos

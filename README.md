@@ -52,6 +52,21 @@ El script SQL equivalente está en `database/sql/microempresa_db.sql`.
 La sesión se cierra tras 15 minutos de inactividad: `SESSION_LIFETIME=15` en `.env.example` y valor por defecto 15 en `config/session.php`.
 Si ya tienes un `.env` creado antes de este cambio, edita ahí `SESSION_LIFETIME` (o bórralo para usar el valor por defecto) y ejecuta `php artisan config:clear`.
 
+## Copias de seguridad (RNF11)
+
+`php artisan respaldo:crear` guarda una copia de la base de datos en `storage/respaldos/` con la fecha en el nombre
+(`respaldo-AAAAMMDD-HHMMSS.sqlite` o `.sql`). Con SQLite copia el archivo; con MySQL/MariaDB usa `mysqldump`, que debe estar en el `PATH`
+(en XAMPP: `C:\xampp\mysql\bin`). Con otro motor, el comando avisa que no está soportado. La carpeta no se sube a Git.
+
+Está programado una vez al día (`routes/console.php`), pero Laravel solo ejecuta lo programado si el servidor llama cada minuto al programador:
+
+- **Linux (cron):** `* * * * * cd /ruta/del/proyecto && php artisan schedule:run >> /dev/null 2>&1`
+- **Windows / XAMPP:** crear en el Programador de tareas una tarea que se repita cada minuto con la acción
+  `php.exe artisan schedule:run` (carpeta de inicio: la del proyecto).
+
+Para probar a mano: `php artisan respaldo:crear`; para ver qué hay programado: `php artisan schedule:list`.
+Guarda también una copia de `storage/respaldos` fuera del servidor: una copia en el mismo disco no protege de un fallo del disco.
+
 ## Pruebas
 
 ```
