@@ -4,11 +4,12 @@ Marcas: `[ ]` pendiente · `[x]` auditada. Una unidad por vuelta. Debajo de cada
 qué puntos revisó (para que la cobertura sea verificable, como pide el método de Cloudflare).
 Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas prácticas de Laravel.
 
-- [ ] **S00 – Reconocimiento**
+- [x] **S00 – Reconocimiento**
   Crear `auditoria/arquitectura.md` (máximo 120 líneas): rutas agrupadas por rol (`php artisan route:list
   --except-vendor`), límites de confianza (anónimo → login; Vendedor; Administrador; navegador → servidor;
   CSV → Excel; scripts de CDN), entradas de datos por pantalla y dónde se guardan. Este archivo es el contexto
   compartido de todas las vueltas y subagentes: no se vuelve a explorar el proyecto completo.
+  REVISADO: 47 rutas con su middleware, VerificarRol, LoginController, bootstrap/app.php, CDN y selectRaw ubicados.
 
 - [ ] **S01 – Control de acceso (A01)**
   Cada ruta con su middleware (`auth`, `rol:Administrador`); qué puede hacer el Vendedor por URL directa;
