@@ -76,11 +76,14 @@ class VentaService
     /** Anula una venta y devuelve las unidades al inventario (solo Administrador). */
     public function anular(Venta $venta, string $motivo, Usuario $admin): Venta
     {
-        if ($venta->estado === Venta::ANULADA) {
-            throw ValidationException::withMessages(['venta' => 'La venta ya fue anulada.']);
-        }
-
         return DB::transaction(function () use ($venta, $motivo, $admin) {
+            // Se relee la venta bajo bloqueo: dos anulaciones simultáneas no devuelven el stock dos veces
+            $venta = Venta::whereKey($venta->id)->lockForUpdate()->firstOrFail();
+
+            if ($venta->estado === Venta::ANULADA) {
+                throw ValidationException::withMessages(['venta' => 'La venta ya fue anulada.']);
+            }
+
             foreach ($venta->detalles as $detalle) {
                 $producto = Producto::whereKey($detalle->producto_id)->lockForUpdate()->firstOrFail();
                 $producto->increment('stock', $detalle->cantidad);

@@ -46,6 +46,7 @@ Requisitos no funcionales cubiertos: sesión de 15 minutos (RNF05), rendimiento 
 4. Abrir http://localhost:8000
 
 Usuarios de prueba (creados por el seeder): `admin@microempresa.test` y `vendedor@microempresa.test`, contraseña `password`.
+Esa contraseña solo se usa fuera de producción: con `APP_ENV=production` el seeder toma `SEED_PASSWORD` del entorno o genera una aleatoria que muestra una sola vez en la consola.
 
 El script SQL equivalente está en `database/sql/microempresa_db.sql`.
 

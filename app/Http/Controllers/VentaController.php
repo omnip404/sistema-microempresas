@@ -8,6 +8,7 @@ use App\Models\Rol;
 use App\Models\Venta;
 use App\Services\VentaService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /**
  * Registro y anulación de ventas (RF06). La lógica de negocio está en VentaService;
@@ -35,9 +36,9 @@ class VentaController extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'cliente_id' => ['nullable', 'exists:clientes,id'],
+            'cliente_id' => ['nullable', 'integer', 'exists:clientes,id'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.producto_id' => ['required', 'distinct', 'exists:productos,id'],
+            'items.*.producto_id' => ['required', 'integer', 'distinct', Rule::exists('productos', 'id')->where('activo', true)],
             'items.*.cantidad' => ['required', 'integer', 'min:1'],
         ], [
             'items.required' => 'Agregue al menos un producto a la venta.',
