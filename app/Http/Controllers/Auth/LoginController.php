@@ -19,6 +19,8 @@ class LoginController extends Controller
 
     private const MINUTOS_BLOQUEO = 5;
 
+    private const MENSAJE_FALLO = 'Correo o contraseña incorrectos. Si falló varias veces, espere unos minutos e intente de nuevo.';
+
     public function show()
     {
         return view('auth.login');
@@ -34,16 +36,14 @@ class LoginController extends Controller
         $usuario = Usuario::where('email', $credenciales['email'])->first();
 
         if ($usuario?->estaBloqueado()) {
-            throw ValidationException::withMessages([
-                'email' => 'Cuenta bloqueada por intentos fallidos. Intente después de las '
-                    .$usuario->bloqueado_hasta->format('H:i').'.',
-            ]);
+            // Mismo mensaje que un fallo normal: no se revela si el correo existe
+            throw ValidationException::withMessages(['email' => self::MENSAJE_FALLO]);
         }
 
         if (! Auth::attempt($credenciales + ['activo' => true])) {
             $this->registrarIntentoFallido($usuario);
 
-            throw ValidationException::withMessages(['email' => 'Correo o contraseña incorrectos.']);
+            throw ValidationException::withMessages(['email' => self::MENSAJE_FALLO]);
         }
 
         $usuario->forceFill(['intentos_fallidos' => 0, 'bloqueado_hasta' => null])->save();
@@ -86,13 +86,15 @@ class LoginController extends Controller
             return;
         }
 
-        $usuario->intentos_fallidos++;
+        // Incremento atómico: varios fallos simultáneos no deben pisarse el contador
+        Usuario::whereKey($usuario->id)->increment('intentos_fallidos');
+        $usuario->refresh();
 
         if ($usuario->intentos_fallidos >= self::MAX_INTENTOS) {
-            $usuario->bloqueado_hasta = now()->addMinutes(self::MINUTOS_BLOQUEO);
-            $usuario->intentos_fallidos = 0;
+            $usuario->forceFill([
+                'bloqueado_hasta' => now()->addMinutes(self::MINUTOS_BLOQUEO),
+                'intentos_fallidos' => 0,
+            ])->save();
         }
-
-        $usuario->save();
     }
 }

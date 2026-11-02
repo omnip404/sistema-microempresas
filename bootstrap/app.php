@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['rol' => VerificarRol::class, 'activo' => VerificarCuentaActiva::class]);
+        // Invalida las sesiones abiertas cuando cambia la contraseña de la cuenta
+        $middleware->authenticateSessions();
         $middleware->redirectUsersTo('/ventas/nueva');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
