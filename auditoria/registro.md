@@ -9,3 +9,4 @@
 5 | 2026-11-01 00:00 | S04 | candidatos 0 / confirmados 0 / corregidos 0 | 86/86 | - | 2 notas (CDN sin SRI, sin CSP); sin vectores de XSS
 6 | 2026-11-01 00:00 | S05 | candidatos 0 / confirmados 0 / corregidos 0 | 86/86 | - | 2 notas nuevas (cookie secure/same_site, DELETE productos sin UI); CSRF completo
 7 | 2026-11-01 00:00 | S06 | candidatos 2 / confirmados 2 / corregidos 2 | 91/91 | 87637ce | 8 notas; SEC-04 absorbida por SEC-24
+8 | 2026-11-01 00:00 | S07 | candidatos 2 / confirmados 2 / corregidos 2 | 93/93 | 93a6921 | 5 notas; SEC-03 absorbida por SEC-33/34

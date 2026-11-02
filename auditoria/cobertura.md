@@ -44,9 +44,10 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   productos o clientes inactivos usados en ventas o compras.
   REVISADO: `$fillable` de los 12 modelos, uso de validated()/validate() (0 usos de `$request->all()`), FormRequest y validaciones en línea, límites numéricos frente a columnas, cantidades cero/negativas/decimales/1e3, IDs inexistentes y de tipo arreglo, inactivos en ventas/compras, ítems repetidos, ajuste de inventario, unicidad y collation, baja lógica vs eliminación. Candidatos 2 (ambos confirmados y corregidos), notas 8.
 
-- [ ] **S07 – Lógica de negocio y concurrencia (A06)**
+- [x] **S07 – Lógica de negocio y concurrencia (A06)**
   Stock negativo por dos ventas simultáneas; anular dos veces; anular una compra cuyo stock ya se vendió;
   manipular el total o el precio desde el navegador; ítems repetidos en el carrito; doble envío del formulario.
+  REVISADO: lockForUpdate en ventas y ajustes, orden de bloqueo, anular dos veces venta y compra (SEC-03 verificada a fondo), anular compra con stock ya vendido, total y precio recalculados en el servidor, ítems repetidos, doble envío, stock_resultante, ajuste vs venta concurrente, float vs decimal, fecha del servidor, motivo y estados de anulación, exclusión de anuladas en panel/reportes/comparación. Candidatos 2 (ambos confirmados y corregidos), notas 5.
 
 - [ ] **S08 – Exportaciones CSV e impresión (A05)**
   Inyección de fórmulas en Excel (celdas que empiezan con `=`, `+`, `-`, `@`, tabulación o retorno de carro,
