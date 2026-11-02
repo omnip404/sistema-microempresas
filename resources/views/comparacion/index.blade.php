@@ -45,7 +45,7 @@
 </form>
 
 <div class="row g-3">
-    <section class="col-lg-7" aria-labelledby="titulo-tabla"><div class="tarjeta p-2 p-md-3 h-100">
+    <section class="col-12" aria-labelledby="titulo-tabla"><div class="tarjeta p-2 p-md-3">
         <h2 id="titulo-tabla" class="h4 px-2">Resultado</h2>
         <div class="table-responsive">
             <table class="table tabla">
@@ -80,7 +80,7 @@
         </div>
     </div></section>
 
-    <section class="col-lg-5" aria-labelledby="titulo-grafico"><div class="tarjeta p-3 h-100">
+    <section class="col-12 col-xl-8 col-xxl-6" aria-labelledby="titulo-grafico"><div class="tarjeta p-3">
         <h2 id="titulo-grafico" class="h4">Total vendido, en Bs</h2>
         <canvas id="graficoComparacion" height="200" role="img"
                 aria-label="Gráfico de barras del total vendido: periodo A {{ number_format($a['total'], 2, ',', '.') }} bolivianos, periodo B {{ number_format($b['total'], 2, ',', '.') }} bolivianos. Los datos están en la tabla."></canvas>
