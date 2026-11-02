@@ -82,11 +82,14 @@ class CompraService
      */
     public function anular(Compra $compra, Usuario $admin): Compra
     {
-        if ($compra->estado === Compra::ANULADA) {
-            throw ValidationException::withMessages(['compra' => 'La compra ya fue anulada.']);
-        }
-
         return DB::transaction(function () use ($compra, $admin) {
+            // Se relee la compra bajo bloqueo: dos anulaciones simultáneas no descuentan el stock dos veces
+            $compra = Compra::whereKey($compra->id)->lockForUpdate()->firstOrFail();
+
+            if ($compra->estado === Compra::ANULADA) {
+                throw ValidationException::withMessages(['compra' => 'La compra ya fue anulada.']);
+            }
+
             $productos = [];
 
             // Primero se bloquea y verifica todo (sumando si un producto se repite); recién después se descuenta.
