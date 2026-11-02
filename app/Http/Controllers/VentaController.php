@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Producto;
+use App\Models\Rol;
 use App\Models\Venta;
 use App\Services\VentaService;
 use Illuminate\Http\Request;
@@ -45,7 +46,24 @@ class VentaController extends Controller
         $venta = $this->ventas->registrar($request->user(), $datos['items'], $datos['cliente_id'] ?? null);
 
         return redirect()->route('ventas.create')
-            ->with('ok', "Venta N° {$venta->id} registrada por Bs ".number_format($venta->total, 2));
+            ->with('ok', "Venta N° {$venta->id} registrada por Bs ".number_format($venta->total, 2))
+            ->with('comprobante', route('ventas.comprobante', $venta));
+    }
+
+    /** Comprobante imprimible (RF06.6): el Administrador o el vendedor que hizo la venta. */
+    public function comprobante(Request $request, Venta $venta)
+    {
+        $usuario = $request->user();
+
+        abort_unless(
+            $usuario->tieneRol(Rol::ADMINISTRADOR) || $venta->usuario_id === $usuario->id,
+            403,
+            'No tiene permiso para ver este comprobante.'
+        );
+
+        $venta->load('usuario', 'cliente', 'detalles.producto');
+
+        return view('ventas.comprobante', compact('venta'));
     }
 
     public function anular(Request $request, Venta $venta)

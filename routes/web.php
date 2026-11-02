@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     // Administrador y Vendedor
     Route::get('/ventas/nueva', [VentaController::class, 'create'])->name('ventas.create');
     Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
+    Route::get('/ventas/{venta}/comprobante', [VentaController::class, 'comprobante'])->name('ventas.comprobante');
 
     Route::resource('clientes', ClienteController::class)->except(['show', 'destroy']);
 

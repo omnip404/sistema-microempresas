@@ -9,7 +9,7 @@
             <caption class="visually-hidden">Ventas registradas, de la más reciente a la más antigua</caption>
             <thead><tr>
                 <th scope="col">N°</th><th scope="col">Fecha</th><th scope="col">Vendedor</th><th scope="col">Cliente</th>
-                <th scope="col" class="numero">Total (Bs)</th><th scope="col">Estado</th><th scope="col">Anular</th>
+                <th scope="col" class="numero">Total (Bs)</th><th scope="col">Estado</th><th scope="col">Comprobante</th><th scope="col">Anular</th>
             </tr></thead>
             <tbody>
             @forelse ($ventas as $v)
@@ -26,6 +26,7 @@
                             <span class="estado estado-exito">Registrada</span>
                         @endif
                     </td>
+                    <td><a href="{{ route('ventas.comprobante', $v) }}" target="_blank" rel="noopener">Imprimir comprobante<span class="visually-hidden"> de la venta {{ $v->id }}</span></a></td>
                     <td>
                         @if ($v->estado === 'REGISTRADA')
                             <form method="POST" action="{{ route('ventas.anular', $v) }}" class="d-flex gap-2"
@@ -41,7 +42,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7" class="text-center text-secundario py-4">Todavía no hay ventas registradas.</td></tr>
+                <tr><td colspan="8" class="text-center text-secundario py-4">Todavía no hay ventas registradas.</td></tr>
             @endforelse
             </tbody>
         </table>

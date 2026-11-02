@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PeriodoRequest;
+use App\Models\Proveedor;
 use App\Services\ReporteService;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -25,14 +26,16 @@ class ReporteController extends Controller
             'usaPeriodo' => ReporteService::TIPOS[$tipo][1],
             'desde' => $request->desde(),
             'hasta' => $request->hasta(),
-            'reporte' => $this->reportes->generar($tipo, $request->desde(), $request->hasta()),
+            'proveedores' => Proveedor::orderBy('nombre')->get(['id', 'nombre']),
+            'proveedorId' => $request->proveedorId(),
+            'reporte' => $this->reportes->generar($tipo, $request->desde(), $request->hasta(), $request->proveedorId()),
         ]);
     }
 
     public function exportar(PeriodoRequest $request): StreamedResponse
     {
         $tipo = $request->tipo();
-        $reporte = $this->reportes->generar($tipo, $request->desde(), $request->hasta());
+        $reporte = $this->reportes->generar($tipo, $request->desde(), $request->hasta(), $request->proveedorId());
         $columnas = $reporte['columnas'];
 
         $filas = [array_column($columnas, 1)];
