@@ -1,67 +1,91 @@
-# Loop de implementación – Sistema de Gestión de Microempresas
+# Loop de auditoría de seguridad – Sistema de Gestión de Microempresas
 
-Eres el desarrollador de este proyecto Laravel 12 (PHP 8.2). Cada iteración del loop implementa
-COMO MÁXIMO UNA tarea de `BACKLOG-LOOP.md`. El avance vive en archivos, no en tu memoria:
-léelos siempre al empezar, aunque creas recordar el estado.
+Eres el coordinador de la auditoría de seguridad de este proyecto Laravel 12. Cada vuelta audita UNA unidad
+de `auditoria/cobertura.md`. El método está adaptado de la *security-audit skill* de Cloudflare (2026) y de
+las reglas de Project CodeGuard (CoSAI):
+- **quien verifica un hallazgo nunca es quien lo encontró**;
+- la severidad depende del impacto real;
+- si falta una capa extra de defensa, es una NOTA, no una vulnerabilidad.
 
-## 1. Arranque (en cada iteración)
+El avance vive en archivos: léelos al empezar cada vuelta.
 
-1. Lee `BACKLOG-LOOP.md` completo y las últimas 15 líneas de `LOOP-LOG.md`.
-2. Cuenta las iteraciones ya registradas en `LOOP-LOG.md`. Si ya hay 16 → ve a **5. Detenerse**.
-3. Ejecuta `git status --short` y `php artisan test`.
-   Si hay cambios sin commit o alguna prueba falla ANTES de que toques nada, no trabajes:
-   registra `LÍNEA BASE ROTA` en `LOOP-LOG.md` y ve a **5. Detenerse**.
+**Ahorro de contexto:** usa siempre `php artisan test --compact`. La búsqueda la hace el subagente
+`cazador-seguridad` y la verificación `verificador-seguridad`, para que la lectura de archivos no llene esta
+conversación. A ti solo te llegan sus respuestas cortas.
 
-## 2. Elegir la tarea
+## 1. Arranque (cada vuelta)
 
-- Toma la primera tarea marcada `[ ]`, en orden. Ignora `[x]` (hecha) y `[!]` (bloqueada).
-- Si no queda ninguna `[ ]` → ve a **5. Detenerse**.
-- Si la tarea ya está hecha (el código existe y cumple sus criterios), márcala `[x]` sin rehacerla.
+1. Lee `auditoria/cobertura.md`, `auditoria/hallazgos.md` y las últimas 10 líneas de `auditoria/registro.md`.
+2. Si `auditoria/registro.md` ya tiene 18 vueltas → ve a **6. Detenerse**.
+3. Ejecuta `git status --short` y `php artisan test --compact`. Si hay cambios sin commit o fallan pruebas
+   antes de tocar nada → registra `LÍNEA BASE ROTA` y ve a **6. Detenerse**.
 
-## 3. Implementar
+## 2. Buscar
 
-- Cumple los **criterios de aceptación** de la tarea, ni más ni menos (KISS, YAGNI).
-- Sigue las convenciones de `BACKLOG-LOOP.md` → sección "Convenciones del proyecto".
-- Escribe las pruebas Feature que pide la tarea en `tests/Feature/`.
-- Presupuesto: como máximo **3 ciclos** de "ejecutar pruebas → corregir". No pruebes la misma
-  corrección dos veces; si un enfoque falla dos veces, cambia de enfoque o bloquea la tarea.
+- Toma la primera unidad `[ ]`. Si no queda ninguna → ve a **6. Detenerse**.
+- **S00** la haces tú: crea `auditoria/arquitectura.md` (máximo 120 líneas) a partir de
+  `php artisan route:list --except-vendor` y de los controladores. Ese archivo es el contexto que compartirán
+  todos los subagentes.
+- **S01 a S12:** lanza el subagente `cazador-seguridad` con el texto de la unidad y su lista de comprobación.
+  Copia su línea `REVISADO:` debajo de la unidad en `cobertura.md`.
 
-## 4. Cerrar la tarea
+## 3. Verificar (independiente y en paralelo)
 
-**Si `php artisan test` pasa completo:**
-1. `vendor/bin/pint` sobre los archivos que creaste o cambiaste.
-2. Vuelve a ejecutar `php artisan test` (debe seguir en verde).
-3. Marca la tarea `[x]` en `BACKLOG-LOOP.md` y agrega su línea a `LOOP-LOG.md`.
-4. `git add -A` y `git commit -m "Lxx: <título de la tarea>"`.
+- Por cada línea `CANDIDATO`, lanza un subagente `verificador-seguridad` nuevo. Pásale solo la línea del
+  candidato y un ID corto (`Sec07a`, `Sec07b`...), nunca tu opinión.
+- Lanza hasta **4 verificadores a la vez**, en paralelo, y espera a que todos respondan.
+- Las líneas `NOTA` no se verifican: se registran como NOTA.
 
-**Si tras 3 ciclos sigue fallando, o la tarea exige algo de la lista Prohibido:**
-1. `git stash push -u -m "LOOP Lxx bloqueada"` (guarda el trabajo sin borrarlo).
-2. Marca la tarea `[!]` y escribe el motivo en una línea debajo de ella.
-3. Agrega la línea a `LOOP-LOG.md` y haz commit solo de `BACKLOG-LOOP.md` y `LOOP-LOG.md`.
-4. Si la iteración anterior también terminó en BLOQUEADA → ve a **5. Detenerse**.
+## 4. Registrar
 
-## 5. Siguiente iteración o detenerse
+En `auditoria/hallazgos.md`, una fila por candidato o nota, con el ID `SEC-nn` correlativo y el nivel
+P × I. Los RECHAZADOS se registran con la protección que los refuta. Las pruebas que dejó el verificador
+en `tests/Security/` se quedan: sirven de regresión.
 
-- Si quedan tareas `[ ]` y no se cumplió ninguna condición de parada: programa la siguiente
-  iteración en **60 segundos** (no hay nada externo que esperar).
-- Condiciones de parada: no quedan tareas `[ ]`, 16 iteraciones, línea base rota, o dos
-  tareas bloqueadas seguidas. En ese caso:
-  1. Escribe `LOOP-RESUMEN.md`: tareas hechas (con su commit), tareas bloqueadas (motivo y
-     nombre del stash), resultado final de `php artisan test`, y qué debe revisar el equipo.
-  2. Haz commit de `LOOP-RESUMEN.md`.
-  3. Detén el loop (no programes otra iteración).
+## 5. Corregir (solo CONFIRMADOS)
 
-## Prohibido (si una tarea lo necesita, márcala `[!]` y explica)
+1. La prueba del verificador falla hoy y expresa el comportamiento seguro.
+2. Aplica la corrección mínima en el código de la aplicación.
+3. `php artisan test --compact` debe pasar completo. Tienes como máximo 3 ciclos.
+4. `vendor/bin/pint` sobre los archivos tocados, `git add -A` y `git commit -m "SEC-nn: <título>"`.
 
-- `git push`, `git reset --hard`, `git clean`, `git checkout -- .`, reescribir o borrar commits.
-- Instalar, quitar o actualizar paquetes (`composer`, `npm`), o tocar `php.ini` o `.env`.
-- Usar internet o herramientas externas: Trello, Figma, Claude Docs, Google Drive, correo.
-- Cambiar decisiones que el grupo aún no tomó: nombre del sistema (`APP_NAME`), motor de base
-  de datos (MySQL o PostgreSQL), flujo de aprobaciones, inicio de sesión con Google.
-- Borrar o debilitar pruebas existentes para que pasen. Solo puedes ajustar una prueba si la
-  tarea cambia ese comportamiento a propósito y lo dice.
-- Crear, editar o borrar archivos fuera de esta carpeta del proyecto.
+No corrijas, solo registra como RECOMENDACIÓN, cuando la corrección:
+- necesita paquetes, internet o cambiar `.env` o `php.ini`;
+- cambia una decisión del grupo (nombre, motor de base de datos, aprobaciones, login con Google);
+- es una NOTA;
+- no se logra en 3 ciclos. En este caso, además: `git stash push -u -m "SEC-nn sin corregir"`.
 
-## Formato de `LOOP-LOG.md` (una línea por iteración)
+Al cerrar la unidad:
+1. Márcala `[x]`.
+2. Agrega su línea a `registro.md`.
+3. Haz commit de `auditoria/` y `tests/Security/`.
 
-`N | AAAA-MM-DD HH:MM | Lxx | HECHA / BLOQUEADA / SIN TAREAS / LÍNEA BASE ROTA | pruebas aprobadas/total | commit | nota breve`
+Si la vuelta anterior también terminó sin dejar las pruebas en verde → **6. Detenerse**.
+
+## 6. Siguiente vuelta o detenerse
+
+- Si quedan unidades `[ ]`, programa la siguiente vuelta en 60 segundos.
+- Si no, escribe `auditoria/INFORME-SEGURIDAD.md` con:
+  - el resumen ejecutivo;
+  - la tabla de hallazgos por nivel;
+  - los hallazgos corregidos, con su commit;
+  - los que necesitan validación;
+  - las notas y recomendaciones para el equipo;
+  - la cobertura de cada unidad.
+
+  Haz commit del informe y **detén el loop**: no programes otra vuelta.
+
+## Prohibido
+
+- `git push`, `git reset --hard`, `git clean`, `git checkout -- .` o reescribir commits.
+- Instalar, quitar o actualizar paquetes. De Composer, el único comando permitido es `composer audit`.
+- Atacar o escanear algo que no sea este código: nada de servidores externos, y no expongas
+  `php artisan serve` a la red.
+- Leer o mostrar `.env`.
+- Borrar o debilitar pruebas existentes.
+- Usar MCP (Trello, Figma, Docs, Drive) o internet.
+- Tocar archivos fuera de esta carpeta.
+
+## Formato de `auditoria/registro.md`
+
+`N | AAAA-MM-DD HH:MM | Sxx | candidatos C / confirmados K / corregidos F | pruebas aprobadas/total | commits | nota`
