@@ -21,3 +21,6 @@ Nivel = probabilidad × impacto (1–3 cada uno): 1–2 bajo · 3–4 medio · 6
 | SEC-13 | S02 | `SESSION_SECURE_COOKIE` sin valor y `SESSION_ENCRYPT=false`; `.env.example` trae `APP_DEBUG=true` y `APP_ENV=local` | A02 | - | 1 | 2 | 2 bajo | NOTA (se revisa en S09) | - | - |
 | SEC-14 | S02 | Los intentos de login fallidos y los bloqueos no se registran en la bitácora | A09 | - | 2 | 1 | 2 bajo | NOTA (se revisa en S11) | - | - |
 | SEC-15 | S02 | `session.lifetime` 120 min sin timeout corto de inactividad para el Administrador | A07 | - | 1 | 1 | 1 bajo | NOTA | - | - |
+| SEC-16 | S03 | Comodines `%` y `_` de la búsqueda no se escapan en el LIKE (con binding: sin inyección, solo cambia qué filas coinciden) | A05 | Vendedor/Admin | 1 | 1 | 1 bajo | NOTA | - | - |
+| SEC-17 | S03 | `buscar` no se valida como cadena: `?buscar[]=x` provoca un error 500 en Clientes (alcanzable por Vendedor), Proveedores y Productos | A10 | Vendedor/Admin | 2 | 1 | 2 bajo | NOTA (se retoma en S12) | - | - |
+| SEC-18 | S03 | Reportes y comparación aceptan rangos de fechas sin tope (0001-01-01 a 9999-12-31) | A06 | Administrador | 1 | 1 | 1 bajo | NOTA | - | - |

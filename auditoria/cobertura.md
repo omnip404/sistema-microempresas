@@ -23,9 +23,10 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   usuarios por mensajes distintos, reglas de contraseña, `remember_token`.
   REVISADO: bloqueo a 3 intentos (mayúsculas/espacios/collation: sin evasión), throttle, regeneración e invalidación de sesión, cuenta bloqueada/desactivada, enumeración por mensaje y por tiempo, reglas de contraseña, sesiones tras cambio de clave, remember me, `intended` (sin open redirect), config/session.php y auth.php. Candidatos 4 (3 confirmados y corregidos, 1 rechazado), notas 6.
 
-- [ ] **S03 – Inyección SQL (A05)**
+- [x] **S03 – Inyección SQL (A05)**
   Todo `DB::raw`, `selectRaw`, `whereRaw`, `orderBy` o `LIKE` con datos del usuario; nombres de columna u
   orden tomados de la URL; comodines `%` y `_` en búsquedas.
+  REVISADO: selectRaw/DB::raw de ReporteService y PanelController (SQL fijo, fechas por binding), ausencia de whereRaw/orderByRaw/DB::select, orderBy/groupBy fijos, parámetro tipo (Rule::in), fechas de PeriodoRequest/ComparacionRequest/Bitácora, LIKE con binding en Cliente/Proveedor/Producto, paginación fija. Candidatos 0, notas 3.
 
 - [ ] **S04 – XSS y salida (A05)**
   Uso de `{!! !!}`; JavaScript que arma HTML (carritos de ventas y compras, gráficos); `@json` dentro de
