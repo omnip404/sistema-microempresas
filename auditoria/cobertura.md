@@ -38,10 +38,11 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   `@csrf` en todos los formularios POST/PUT/DELETE; rutas GET que cambian datos; cierre de sesión por POST.
   REVISADO: `@csrf` en los 17 formularios POST y `@method` en PUT/DELETE; sin modales ni formularios/fetch creados por JS; las rutas GET solo leen (incluida `/reportes/exportar` y `/up`); logout por POST; sin exclusiones de CSRF ni method override propio; same_site=lax y http_only. Candidatos 0, notas 3.
 
-- [ ] **S06 – Validación y asignación masiva (A05/A06)**
+- [x] **S06 – Validación y asignación masiva (A05/A06)**
   `$fillable` frente a lo que llega del formulario; uso de `validated()`; límites numéricos (cantidades
   negativas o cero, precios negativos, desbordes, decimales); longitudes máximas; IDs inexistentes;
   productos o clientes inactivos usados en ventas o compras.
+  REVISADO: `$fillable` de los 12 modelos, uso de validated()/validate() (0 usos de `$request->all()`), FormRequest y validaciones en línea, límites numéricos frente a columnas, cantidades cero/negativas/decimales/1e3, IDs inexistentes y de tipo arreglo, inactivos en ventas/compras, ítems repetidos, ajuste de inventario, unicidad y collation, baja lógica vs eliminación. Candidatos 2 (ambos confirmados y corregidos), notas 8.
 
 - [ ] **S07 – Lógica de negocio y concurrencia (A06)**
   Stock negativo por dos ventas simultáneas; anular dos veces; anular una compra cuyo stock ya se vendió;
