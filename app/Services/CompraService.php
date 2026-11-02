@@ -48,6 +48,12 @@ class CompraService
             foreach ($items as $item) {
                 $producto = Producto::whereKey($item['producto_id'])->lockForUpdate()->firstOrFail();
 
+                if (! $producto->activo) {
+                    throw ValidationException::withMessages([
+                        'items' => "El producto {$producto->nombre} está dado de baja y no se puede comprar.",
+                    ]);
+                }
+
                 $compra->detalles()->create([
                     'producto_id' => $producto->id,
                     'cantidad' => $item['cantidad'],
