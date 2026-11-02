@@ -38,7 +38,7 @@
                     <caption class="visually-hidden">Productos agregados a esta compra; cantidad y costo se pueden editar</caption>
                     <thead><tr>
                         <th scope="col">Producto</th><th scope="col" class="numero">Cantidad</th>
-                        <th scope="col" class="numero">Costo (Bs)</th><th scope="col" class="numero">Subtotal</th>
+                        <th scope="col" class="numero">Costo unitario (Bs)</th><th scope="col" class="numero">Subtotal<span class="visually-hidden"> (cantidad por costo unitario)</span></th>
                         <th scope="col"><span class="visually-hidden">Quitar</span></th>
                     </tr></thead>
                     <tbody id="carrito"></tbody>

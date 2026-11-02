@@ -34,7 +34,7 @@
                     <caption class="visually-hidden">Productos agregados a esta venta</caption>
                     <thead><tr>
                         <th scope="col">Producto</th><th scope="col" class="numero">Cant.</th>
-                        <th scope="col" class="numero">Precio</th><th scope="col" class="numero">Subtotal</th>
+                        <th scope="col" class="numero">Precio unitario</th><th scope="col" class="numero">Subtotal<span class="visually-hidden"> (cantidad por precio unitario)</span></th>
                         <th scope="col"><span class="visually-hidden">Quitar</span></th>
                     </tr></thead>
                     <tbody id="carrito"></tbody>
