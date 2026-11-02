@@ -13,6 +13,8 @@ class ProveedorController extends Controller
 {
     public function index(Request $request)
     {
+        $request->validate(['buscar' => ['nullable', 'string', 'max:100']]);
+
         $proveedores = Proveedor::query()
             ->when($request->buscar, fn ($q, $texto) => $q->where(
                 fn ($q) => $q->where('nombre', 'like', "%{$texto}%")->orWhere('nit', 'like', "%{$texto}%")

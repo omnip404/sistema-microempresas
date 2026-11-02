@@ -31,7 +31,7 @@ class LoginController extends Controller
     {
         $credenciales = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => ['required', 'string'],
         ]);
 
         $usuario = Usuario::where('email', $credenciales['email'])->first();

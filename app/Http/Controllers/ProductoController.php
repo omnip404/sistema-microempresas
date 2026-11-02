@@ -15,6 +15,11 @@ class ProductoController extends Controller
 {
     public function index(Request $request)
     {
+        $request->validate([
+            'buscar' => ['nullable', 'string', 'max:100'],
+            'categoria_id' => ['nullable', 'integer'],
+        ]);
+
         $productos = Producto::with('categoria')
             ->when($request->buscar, fn ($q, $texto) => $q->where(
                 fn ($q) => $q->where('nombre', 'like', "%{$texto}%")->orWhere('codigo', 'like', "%{$texto}%")
