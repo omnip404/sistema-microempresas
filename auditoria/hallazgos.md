@@ -26,3 +26,5 @@ Nivel = probabilidad × impacto (1–3 cada uno): 1–2 bajo · 3–4 medio · 6
 | SEC-18 | S03 | Reportes y comparación aceptan rangos de fechas sin tope (0001-01-01 a 9999-12-31) | A06 | Administrador | 1 | 1 | 1 bajo | NOTA | - | - |
 | SEC-19 | S04 | Chart.js (`chart.js@4`) y Bootstrap/Fonts por CDN sin versión exacta (Chart.js) ni `integrity`/`crossorigin` (SRI) | A03 | Cadena de suministro | 1 | 3 | 3 medio | NOTA (se revisa en S10) | - | - |
 | SEC-20 | S04 | Sin Content-Security-Policy ni otras cabeceras de seguridad: hoy no hay vector de XSS (0 `{!! !!}`, 0 innerHTML), la CSP sería la segunda defensa | A02 | - | 1 | 2 | 2 bajo | NOTA (se revisa en S09) | - | - |
+| SEC-21 | S05 | Cookie de sesión: `SESSION_SECURE_COOKIE` sin fijar y `same_site=lax` por defecto; valorar `true` y `strict` para uso interno (repite SEC-13 y `APP_DEBUG` de `.env.example`, se resuelve en S09) | A02 | - | 1 | 2 | 2 bajo | NOTA | - | - |
+| SEC-22 | S05 | `DELETE /productos/{producto}` existe sin formulario en las vistas; protegida por CSRF y por rol, sin riesgo | A01 | - | 1 | 1 | 1 bajo | NOTA (informativa) | - | - |

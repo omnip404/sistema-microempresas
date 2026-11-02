@@ -34,8 +34,9 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   datos.
   REVISADO: 0 usos de `{!! !!}` e innerHTML; carritos con createElement/textContent; @json en panel y comparación (flags seguros); detalle JSON de la bitácora con `{{ }}`; mensajes flash; atributos href/onclick/data-*; url()->previous y fullUrl (0 usos); back()/intended; vistas de impresión; welcome y partials. Candidatos 0, notas 2.
 
-- [ ] **S05 – CSRF y métodos HTTP (A01)**
+- [x] **S05 – CSRF y métodos HTTP (A01)**
   `@csrf` en todos los formularios POST/PUT/DELETE; rutas GET que cambian datos; cierre de sesión por POST.
+  REVISADO: `@csrf` en los 17 formularios POST y `@method` en PUT/DELETE; sin modales ni formularios/fetch creados por JS; las rutas GET solo leen (incluida `/reportes/exportar` y `/up`); logout por POST; sin exclusiones de CSRF ni method override propio; same_site=lax y http_only. Candidatos 0, notas 3.
 
 - [ ] **S06 – Validación y asignación masiva (A05/A06)**
   `$fillable` frente a lo que llega del formulario; uso de `validated()`; límites numéricos (cantidades
