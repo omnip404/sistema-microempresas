@@ -14,3 +14,4 @@
 10 | 2026-11-01 00:00 | S09 | candidatos 1 / confirmados 1 / corregidos 1 | 97/97 | beb8b18 | 3 recomendaciones (cabeceras, .env.example/README, DocumentRoot), 5 notas
 11 | 2026-11-01 00:00 | S10 | candidatos 1 / confirmados 1 / corregidos 0 | 97/97 (1 omitida a propósito) | - | SEC-52 pendiente (SRI necesita internet); composer audit sin ejecutar
 12 | 2026-11-01 00:00 | S11 | candidatos 1 / confirmados 1 / corregidos 1 | 99/99 | db08eb5 | 6 notas; ademas SEC-52 corregido con los hashes SRI de la sesión principal (87c04c2)
+13 | 2026-11-01 00:00 | S12 | candidatos 2 / confirmados 2 / corregidos 2 | 102/102 | bcba912 | 5 notas; última unidad, sigue el informe

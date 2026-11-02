@@ -70,6 +70,7 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   contraseñas ni tokens; quién puede ver la bitácora; inyección de saltos de línea en registros.
   REVISADO: modelos observados (Producto, Categoria, Proveedor, Cliente, Venta, Compra, Usuario), anulaciones, cambio de rol, activar/desactivar y desbloqueo, ajustes de inventario, eliminaciones, exportación CSV, intentos fallidos y bloqueos, campos sensibles en el detalle, origen de usuario_id, acceso solo Administrador, filtros y paginación, inmutabilidad, saltos de línea (vista con `{{ }}` y nombres con max), IP, cambios por consola, zona horaria, alertas. Candidatos 1 (confirmado y corregido), notas 6.
 
-- [ ] **S12 – Errores y condiciones excepcionales (A10)**
+- [x] **S12 – Errores y condiciones excepcionales (A10)**
   Excepciones sin capturar que devuelvan 500 con datos; fechas inválidas en filtros; división entre cero en
   la comparación de periodos; transacciones que no se revierten ante un error; mensajes que revelan rutas o SQL.
+  REVISADO: parámetros de tipo arreglo o inesperado en los 13 controladores y 7 Request, fechas imposibles en filtros, división entre cero (comparación y ticket promedio, protegidas), transacciones de ventas/compras/inventario, mensajes con APP_DEBUG=false, route-model binding, 405, paginación, PUT/DELETE sobre inexistentes, eliminar con dependencias, baja lógica, sin carga de archivos, fallo cerrado de rol. Candidatos 2 (ambos confirmados y corregidos), notas 5.
