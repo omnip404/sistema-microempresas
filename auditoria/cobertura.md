@@ -17,10 +17,11 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   tomado de la sesión y nunca del formulario; un Administrador no puede quitarse su propio rol o acceso.
   REVISADO: routes/web.php (todas las rutas con su middleware), VerificarRol, acciones destructivas solo en el grupo Administrador, usuario_id desde la sesión en Venta/Compra/Inventario/BitacoraObserver, autoprotección en UsuarioController/UsuarioRequest, mass assignment de Usuario/Venta, route-model binding sin datos por propietario, login con `activo`. Candidatos 2 (ambos confirmados y corregidos), notas 3.
 
-- [ ] **S02 – Autenticación y sesión (A07)**
+- [x] **S02 – Autenticación y sesión (A07)**
   Bloqueo tras 3 intentos (¿se puede evadir con mayúsculas en el correo o espacios?), `throttle` del login,
   regeneración de sesión al entrar, invalidación al salir, usuario desactivado o bloqueado, enumeración de
   usuarios por mensajes distintos, reglas de contraseña, `remember_token`.
+  REVISADO: bloqueo a 3 intentos (mayúsculas/espacios/collation: sin evasión), throttle, regeneración e invalidación de sesión, cuenta bloqueada/desactivada, enumeración por mensaje y por tiempo, reglas de contraseña, sesiones tras cambio de clave, remember me, `intended` (sin open redirect), config/session.php y auth.php. Candidatos 4 (3 confirmados y corregidos, 1 rechazado), notas 6.
 
 - [ ] **S03 – Inyección SQL (A05)**
   Todo `DB::raw`, `selectRaw`, `whereRaw`, `orderBy` o `LIKE` con datos del usuario; nombres de columna u
