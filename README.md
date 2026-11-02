@@ -2,7 +2,7 @@
 
 Proyecto de la materia Ingeniería de Software (UPEA, paralelo 7toC). Laravel 12 · PHP 8.2 · MySQL 8 · Bootstrap 5 · Chart.js.
 
-## Avance (Fase II, sprints 1–4)
+## Avance (Fase II, sprints 1–4 y cierre de brechas con el SRS)
 
 Las rutas de todos los módulos son solo para el Administrador, con dos excepciones: en Ventas el Vendedor puede registrar (el Administrador además lista y anula) y en Clientes ambos roles listan, crean y editan (solo el Administrador elimina).
 
@@ -14,13 +14,15 @@ Las rutas de todos los módulos son solo para el Administrador, con dos excepcio
 | Categorías (RF03): CRUD, no se elimina si tiene productos | Hecho | `/categorias` |
 | Proveedores (RF04): CRUD con búsqueda y baja lógica | Hecho | `/proveedores` |
 | Clientes (RF05): listar, buscar, crear, editar y eliminar (sin ventas) | Hecho | `/clientes` |
-| Ventas (RF06): carrito, control de stock, anulación con motivo | Hecho | `/ventas/nueva`, `/ventas` |
+| Ventas (RF06): carrito, control de stock, anulación con motivo, comprobante imprimible (RF06.6) | Hecho | `/ventas/nueva`, `/ventas`, `/ventas/{id}/comprobante` |
 | Compras (RF07): registro con costo editable, anulación que revierte el stock | Hecho | `/compras`, `/compras/nueva` |
 | Inventario (RF08): ajustes con observación e historial de movimientos por producto | Hecho | `/productos/{id}/ajuste`, `/productos/{id}/movimientos` |
-| Panel estadístico (RF10): ventas del día y del mes, ticket promedio, gráfico de 7 días, más vendidos | Hecho | `/panel` |
-| Reportes (RF09): ventas por día, inventario valorizado, stock bajo y más vendidos; CSV para Excel e impresión a PDF | Hecho | `/reportes` |
+| Panel estadístico (RF10): ventas del día y del mes, ganancia estimada del mes, filtro de fechas, líneas de ventas por día, barras de los 10 más vendidos, dona de ventas por categoría | Hecho | `/panel` |
+| Reportes (RF09): ventas por día, compras por periodo y proveedor, inventario valorizado, stock bajo y más vendidos; CSV para Excel e impresión a PDF con encabezado y numeración de páginas | Hecho | `/reportes` |
 | Comparación de periodos (RF11): periodo A frente a B con variación % | Hecho | `/comparar-periodos` |
 | Bitácora (RF12): registro automático (Observer), ingreso y salida, consulta con filtros | Hecho | `/bitacora` |
+
+Requisitos no funcionales cubiertos: sesión de 15 minutos (RNF05), rendimiento con 10 000 ventas (RNF01, prueba `@group rendimiento`) y copias de seguridad (RNF11, ver más abajo). Pendiente fuera del código: publicar el repositorio en GitHub (RNF13).
 
 ## Instalación con XAMPP
 
@@ -72,3 +74,5 @@ Guarda también una copia de `storage/respaldos` fuera del servidor: una copia e
 ```
 php artisan test
 ```
+
+Para correr solo la prueba de rendimiento (10 000 ventas generadas por `RendimientoSeeder`, límite de 3 s): `php artisan test --group=rendimiento`.
