@@ -10,11 +10,13 @@ use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 /**
  * Datos de prueba de una microempresa tipo (tienda de abarrotes de El Alto).
  * Usuarios de prueba: admin@microempresa.test y vendedor@microempresa.test,
- * contraseña "password" (cambiarla antes de usar el sistema en producción).
+ * contraseña "password" (solo fuera de producción: en producción se usa SEED_PASSWORD o una
+ * contraseña aleatoria que se muestra una vez en la consola).
  */
 class DatabaseSeeder extends Seeder
 {
@@ -25,8 +27,10 @@ class DatabaseSeeder extends Seeder
         $admin = Rol::create(['nombre' => Rol::ADMINISTRADOR, 'descripcion' => 'Acceso total: catálogo, compras, reportes, usuarios y bitácora']);
         $vendedor = Rol::create(['nombre' => Rol::VENDEDOR, 'descripcion' => 'Registra ventas y consulta productos y stock']);
 
-        Usuario::create(['rol_id' => $admin->id, 'nombre' => 'Administrador', 'email' => 'admin@microempresa.test', 'password' => 'password']);
-        Usuario::create(['rol_id' => $vendedor->id, 'nombre' => 'Vendedor', 'email' => 'vendedor@microempresa.test', 'password' => 'password']);
+        $clave = $this->claveInicial();
+
+        Usuario::create(['rol_id' => $admin->id, 'nombre' => 'Administrador', 'email' => 'admin@microempresa.test', 'password' => $clave]);
+        Usuario::create(['rol_id' => $vendedor->id, 'nombre' => 'Vendedor', 'email' => 'vendedor@microempresa.test', 'password' => $clave]);
 
         $categorias = collect(['Abarrotes', 'Lácteos', 'Limpieza', 'Higiene personal'])
             ->mapWithKeys(fn ($nombre) => [$nombre => Categoria::create(['nombre' => $nombre])->id]);
@@ -56,5 +60,22 @@ class DatabaseSeeder extends Seeder
 
         Proveedor::create(['nombre' => 'Distribuidora mayorista (ejemplo)', 'telefono' => '70000000']);
         Cliente::create(['nombre' => 'Cliente frecuente (ejemplo)', 'ci_nit' => '1234567']);
+    }
+
+    /** La contraseña publicada en el README solo vale fuera de producción. */
+    private function claveInicial(): string
+    {
+        if (! app()->isProduction()) {
+            return 'password';
+        }
+
+        $clave = env('SEED_PASSWORD');
+
+        if (blank($clave)) {
+            $clave = Str::random(20);
+            $this->command?->warn("Contraseña inicial de las cuentas semilla (se muestra una sola vez): {$clave}");
+        }
+
+        return $clave;
     }
 }

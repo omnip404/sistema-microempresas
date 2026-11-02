@@ -44,6 +44,7 @@ Las rutas de todos los módulos son solo para el Administrador, con dos excepcio
 4. Abrir http://localhost:8000
 
 Usuarios de prueba (creados por el seeder): `admin@microempresa.test` y `vendedor@microempresa.test`, contraseña `password`.
+Esa contraseña solo se usa fuera de producción: con `APP_ENV=production` el seeder toma `SEED_PASSWORD` del entorno o genera una aleatoria que muestra una sola vez en la consola.
 
 El script SQL equivalente está en `database/sql/microempresa_db.sql`.
 
