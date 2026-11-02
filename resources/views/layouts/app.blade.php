@@ -74,6 +74,9 @@
             <div class="mensaje mensaje-exito mb-4" role="status">
                 <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>
                 <span>{{ session('ok') }}</span>
+                @if (session('comprobante'))
+                    <a class="ms-auto fw-semibold" href="{{ session('comprobante') }}" target="_blank" rel="noopener">Imprimir comprobante</a>
+                @endif
             </div>
         @endif
 
