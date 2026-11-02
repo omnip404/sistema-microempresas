@@ -9,3 +9,4 @@ Una línea por iteración (la escribe el loop):
 2 | 2026-11-01 21:00 | L14 | HECHA | 101/101 | git log «L14» | Reporte «Compras por periodo» con filtro de proveedor y CSV; 6 pruebas nuevas
 3 | 2026-11-01 21:02 | L15 | HECHA | 105/105 | git log «L15» | Encabezado solo-impresión (negocio, reporte, periodo, emisión) y @page con counter(page); 4 pruebas nuevas
 4 | 2026-11-01 21:05 | L16 | HECHA | 111/111 | git log «L16» | Ganancia estimada del mes en el panel (reemplaza «venta promedio»); consultas del panel movidas a ReporteService; 6 pruebas nuevas
+5 | 2026-11-01 21:08 | L17 | HECHA | 118/118 | git log «L17» | Panel: líneas por día del periodo, barras top 10, filtro desde/hasta (PeriodoRequest) y tablas alternativas; 7 pruebas nuevas

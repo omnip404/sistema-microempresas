@@ -132,37 +132,24 @@ class ReporteService
         return round((float) $ganancia, 2);
     }
 
-    /** Total vendido por día en los últimos $dias días (hoy incluido), con ceros en los días sin ventas. */
-    public function ventasUltimosDias(int $dias): array
+    /**
+     * Total vendido por cada día del periodo (RF10.2), con cero en los días sin ventas,
+     * listo para un gráfico de líneas.
+     *
+     * @return array{etiquetas: array<int, string>, valores: array<int, float>, total: float}
+     */
+    public function ventasDiariasPeriodo(Carbon $desde, Carbon $hasta): array
     {
-        $desde = today()->subDays($dias - 1);
+        $porDia = $this->ventasPorDia($desde, $hasta)['filas']->pluck('total', 'fecha');
 
-        $porDia = Venta::where('estado', Venta::REGISTRADA)
-            ->where('fecha', '>=', $desde)
-            ->selectRaw('DATE(fecha) as dia, SUM(total) as total')
-            ->groupBy('dia')
-            ->pluck('total', 'dia');
+        $etiquetas = [];
+        $valores = [];
+        for ($dia = $desde->copy()->startOfDay(); $dia->lte($hasta); $dia->addDay()) {
+            $etiquetas[] = $dia->format('d/m');
+            $valores[] = (float) ($porDia[$dia->toDateString()] ?? 0);
+        }
 
-        $fechas = collect(range($dias - 1, 0))->map(fn ($n) => today()->subDays($n)->toDateString());
-
-        return [
-            'etiquetas' => $fechas->map(fn ($d) => date('d/m', strtotime($d))),
-            'valores' => $fechas->map(fn ($d) => (float) ($porDia[$d] ?? 0)),
-        ];
-    }
-
-    /** Los $limite productos con más unidades vendidas (ventas REGISTRADAS de todo el historial). */
-    public function productosMasVendidos(int $limite)
-    {
-        return DetalleVenta::query()
-            ->join('ventas', 'ventas.id', '=', 'detalle_ventas.venta_id')
-            ->join('productos', 'productos.id', '=', 'detalle_ventas.producto_id')
-            ->where('ventas.estado', Venta::REGISTRADA)
-            ->select('productos.nombre', DB::raw('SUM(detalle_ventas.cantidad) as unidades'))
-            ->groupBy('productos.nombre')
-            ->orderByDesc('unidades')
-            ->limit($limite)
-            ->get();
+        return ['etiquetas' => $etiquetas, 'valores' => $valores, 'total' => round(array_sum($valores), 2)];
     }
 
     /**
