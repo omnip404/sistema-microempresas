@@ -41,7 +41,7 @@ class MantenimientoCorrectivoTest extends TestCase
 
         $this->actingAs($this->usuario('vendedor@microempresa.test'))
             ->post('/ventas', ['items' => [['producto_id' => $producto->id, 'cantidad' => 2]]])
-            ->assertSessionHasErrors('items');
+            ->assertSessionHasErrors('items.0.producto_id');
 
         $this->assertEquals(20, $producto->fresh()->stock);
         $this->assertDatabaseCount('ventas', 0);
@@ -58,7 +58,7 @@ class MantenimientoCorrectivoTest extends TestCase
                 'proveedor_id' => $proveedor->id,
                 'items' => [['producto_id' => $producto->id, 'cantidad' => 5, 'costo_unitario' => 40]],
             ])
-            ->assertSessionHasErrors('items');
+            ->assertSessionHasErrors('items.0.producto_id');
 
         $this->assertEquals(20, $producto->fresh()->stock);
         $this->assertEquals(0, Compra::count());

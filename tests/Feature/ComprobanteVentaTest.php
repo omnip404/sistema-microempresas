@@ -75,6 +75,7 @@ class ComprobanteVentaTest extends TestCase
             'rol_id' => Rol::where('nombre', Rol::VENDEDOR)->value('id'),
             'nombre' => 'Otro vendedor',
             'email' => 'otro@microempresa.test',
+            'activo' => true,
             'password' => 'password',
         ]);
 
