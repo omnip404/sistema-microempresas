@@ -49,9 +49,10 @@ Referencias: OWASP Top 10:2025, reglas de Project CodeGuard (CoSAI) y buenas pr�
   manipular el total o el precio desde el navegador; ítems repetidos en el carrito; doble envío del formulario.
   REVISADO: lockForUpdate en ventas y ajustes, orden de bloqueo, anular dos veces venta y compra (SEC-03 verificada a fondo), anular compra con stock ya vendido, total y precio recalculados en el servidor, ítems repetidos, doble envío, stock_resultante, ajuste vs venta concurrente, float vs decimal, fecha del servidor, motivo y estados de anulación, exclusión de anuladas en panel/reportes/comparación. Candidatos 2 (ambos confirmados y corregidos), notas 5.
 
-- [ ] **S08 – Exportaciones CSV e impresión (A05)**
+- [x] **S08 – Exportaciones CSV e impresión (A05)**
   Inyección de fórmulas en Excel (celdas que empiezan con `=`, `+`, `-`, `@`, tabulación o retorno de carro,
   en nombres de productos, clientes o categorías); nombre del archivo en la cabecera; fechas de los filtros.
+  REVISADO: flujo completo de exportar/celda/csv, columnas que pasan o no por celda() (solo fecha y monto se formateaban), los 4 reportes de ReporteService, PeriodoRequest, ProductoRequest y CategoriaRequest, prefijado de fórmulas y montos negativos, fputcsv y su carácter de escape, BOM/UTF-8, Content-Disposition/Content-Type, parámetro tipo, vista de impresión. Candidatos 2 (ambos confirmados y corregidos), notas 2. El candidato conocido (celda) quedó confirmado.
 
 - [ ] **S09 – Configuración y cabeceras (A02)**
   `APP_DEBUG` y `APP_ENV` en `.env.example`; cookies de sesión (`http_only`, `same_site`, `secure`);
