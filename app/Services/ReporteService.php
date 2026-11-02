@@ -153,6 +153,43 @@ class ReporteService
     }
 
     /**
+     * Ventas REGISTRADAS del periodo agrupadas por categoría del producto (RF10.4), de mayor a menor.
+     * Si hay más de $maximo categorías, las menores se suman en «Otras» (un gráfico circular
+     * legible no admite más porciones). Cada fila trae su porcentaje sobre el total del periodo.
+     *
+     * @return array{filas: array<int, array{categoria: string, total: float, porcentaje: float}>, total: float}
+     */
+    public function ventasPorCategoria(Carbon $desde, Carbon $hasta, int $maximo = 5): array
+    {
+        $categorias = DetalleVenta::query()
+            ->join('ventas', 'ventas.id', '=', 'detalle_ventas.venta_id')
+            ->join('productos', 'productos.id', '=', 'detalle_ventas.producto_id')
+            ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->where('ventas.estado', Venta::REGISTRADA)
+            ->whereBetween('ventas.fecha', [$desde, $hasta])
+            ->selectRaw('categorias.nombre as categoria, SUM(detalle_ventas.cantidad * detalle_ventas.precio_unitario) as total')
+            ->groupBy('categorias.id', 'categorias.nombre')
+            ->orderByDesc('total')
+            ->orderBy('categorias.nombre')
+            ->get()
+            ->map(fn ($f) => ['categoria' => $f->categoria, 'total' => round((float) $f->total, 2)]);
+
+        if ($categorias->count() > $maximo) {
+            $otras = $categorias->slice($maximo)->sum('total');
+            $categorias = $categorias->take($maximo)->push(['categoria' => 'Otras', 'total' => round($otras, 2)]);
+        }
+
+        $total = round($categorias->sum('total'), 2);
+
+        return [
+            'filas' => $categorias->map(fn ($f) => $f + [
+                'porcentaje' => $total > 0 ? round($f['total'] / $total * 100, 1) : 0.0,
+            ])->values()->all(),
+            'total' => $total,
+        ];
+    }
+
+    /**
      * Compara el periodo A con el B. La variación es el cambio % de A respecto de B;
      * si B vale cero no se puede calcular y queda en null (nunca se divide entre cero).
      *

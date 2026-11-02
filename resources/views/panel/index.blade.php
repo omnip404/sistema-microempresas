@@ -101,6 +101,49 @@
             <p class="text-secundario mb-0">No hay ventas registradas en este periodo.</p>
         @endif
     </div></section>
+
+    {{-- Colores del gráfico circular: paleta categórica validada (dataviz, modo claro); la última porción «Otras» va en gris --}}
+    @php
+        $paleta = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'];
+        $colores = collect($categorias['filas'])->map(fn ($f, $i) => $f['categoria'] === 'Otras' ? '#6b7078' : $paleta[$i % count($paleta)])->all();
+    @endphp
+    <section class="col-12" aria-labelledby="titulo-categorias"><div class="tarjeta p-3">
+        <h2 id="titulo-categorias">Ventas por categoría del periodo, en Bs</h2>
+        @if (count($categorias['filas']) > 0)
+            <div class="row g-3 align-items-center">
+                <div class="col-md-5" style="max-width:360px">
+                    <canvas id="graficoCategorias" role="img"
+                            aria-label="Gráfico circular de ventas por categoría. Los datos están en la leyenda y en la tabla que sigue."></canvas>
+                </div>
+                <div class="col-md-7">
+                    <ul class="list-unstyled mb-0" aria-label="Leyenda del gráfico circular">
+                        @foreach ($categorias['filas'] as $i => $f)
+                            <li class="d-flex align-items-center gap-2 py-1">
+                                <span aria-hidden="true" style="width:14px;height:14px;border-radius:3px;background:{{ $colores[$i] }};flex:none"></span>
+                                <span>{{ $f['categoria'] }}</span>
+                                <span class="ms-auto numero">Bs {{ number_format($f['total'], 2, ',', '.') }} · {{ number_format($f['porcentaje'], 1, ',', '.') }} %</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            <details class="mt-2">
+                <summary>Ver los datos en tabla</summary>
+                <table class="table tabla mt-2">
+                    <caption class="visually-hidden">Ventas por categoría del periodo</caption>
+                    <thead><tr><th scope="col">Categoría</th><th scope="col" class="numero">Ventas (Bs)</th><th scope="col" class="numero">Porcentaje</th></tr></thead>
+                    <tbody>
+                    @foreach ($categorias['filas'] as $f)
+                        <tr><td>{{ $f['categoria'] }}</td><td class="numero">{{ number_format($f['total'], 2, ',', '.') }}</td><td class="numero">{{ number_format($f['porcentaje'], 1, ',', '.') }} %</td></tr>
+                    @endforeach
+                    </tbody>
+                    <tfoot><tr class="fw-bold"><th scope="row">Total</th><td class="numero">{{ number_format($categorias['total'], 2, ',', '.') }}</td><td class="numero">100 %</td></tr></tfoot>
+                </table>
+            </details>
+        @else
+            <p class="text-secundario mb-0">No hay ventas registradas en este periodo.</p>
+        @endif
+    </div></section>
 </div>
 @endsection
 
@@ -135,6 +178,25 @@
                 }
             }
         });
+
+        var lienzoCategorias = document.getElementById('graficoCategorias');
+        if (lienzoCategorias) {
+            new Chart(lienzoCategorias, {
+                type: 'doughnut',
+                data: {
+                    labels: @json(collect($categorias['filas'])->pluck('categoria')),
+                    datasets: [{ data: @json(collect($categorias['filas'])->pluck('total')), backgroundColor: @json($colores),
+                                 borderColor: color('--superficie'), borderWidth: 2 }]
+                },
+                options: {
+                    cutout: '60%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: function (c) { return c.label + ': ' + bs(c.parsed); } } }
+                    }
+                }
+            });
+        }
 
         var lienzoVendidos = document.getElementById('graficoVendidos');
         if (lienzoVendidos) {

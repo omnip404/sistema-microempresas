@@ -10,3 +10,4 @@ Una línea por iteración (la escribe el loop):
 3 | 2026-11-01 21:02 | L15 | HECHA | 105/105 | git log «L15» | Encabezado solo-impresión (negocio, reporte, periodo, emisión) y @page con counter(page); 4 pruebas nuevas
 4 | 2026-11-01 21:05 | L16 | HECHA | 111/111 | git log «L16» | Ganancia estimada del mes en el panel (reemplaza «venta promedio»); consultas del panel movidas a ReporteService; 6 pruebas nuevas
 5 | 2026-11-01 21:08 | L17 | HECHA | 118/118 | git log «L17» | Panel: líneas por día del periodo, barras top 10, filtro desde/hasta (PeriodoRequest) y tablas alternativas; 7 pruebas nuevas
+6 | 2026-11-01 21:11 | L18 | HECHA | 123/123 | git log «L18» | Dona de ventas por categoría (top 5 + «Otras») con leyenda de valores y tabla; paleta validada con validate_palette.js (PASS, contraste bajo → leyenda y tabla como relieve); 5 pruebas nuevas

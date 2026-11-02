@@ -25,10 +25,11 @@ class PanelController extends Controller
 
         $lineas = $this->reportes->ventasDiariasPeriodo($desde, $hasta);
         $masVendidos = $this->reportes->masVendidos($desde, $hasta)['filas'];
+        $categorias = $this->reportes->ventasPorCategoria($desde, $hasta);
         $stockBajo = Producto::stockBajo()->orderBy('stock')->get();
 
         return view('panel.index', compact(
-            'desde', 'hasta', 'ventasHoy', 'ventasMes', 'gananciaMes', 'lineas', 'masVendidos', 'stockBajo'
+            'desde', 'hasta', 'ventasHoy', 'ventasMes', 'gananciaMes', 'lineas', 'masVendidos', 'categorias', 'stockBajo'
         ));
     }
 }
