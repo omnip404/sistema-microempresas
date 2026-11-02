@@ -60,8 +60,18 @@ class ReporteController extends Controller
         return match ($formato) {
             'fecha' => Carbon::parse($valor)->format('d/m/Y'),
             'monto' => number_format((float) $valor, 2, ',', ''),
-            default => $valor,
+            default => $this->sinFormula($valor),
         };
+    }
+
+    /** Texto libre: si empieza con = + - @ tab o retorno, Excel lo evaluaría como fórmula; se antepone una comilla. */
+    private function sinFormula(mixed $valor): mixed
+    {
+        if (is_string($valor) && ! is_numeric($valor) && preg_match('/^[=+\-@\t\r]/', $valor)) {
+            return "'".$valor;
+        }
+
+        return $valor;
     }
 
     private function csv(string $nombre, array $filas): StreamedResponse
@@ -71,7 +81,8 @@ class ReporteController extends Controller
             fwrite($salida, "\xEF\xBB\xBF");   // BOM: Excel reconoce así el UTF-8
 
             foreach ($filas as $fila) {
-                fputcsv($salida, $fila, ';');
+                // Sin carácter de escape: con el `\` por defecto, `\"` no se duplica y permite saltar de columna
+                fputcsv($salida, $fila, ';', '"', '');
             }
 
             fclose($salida);
