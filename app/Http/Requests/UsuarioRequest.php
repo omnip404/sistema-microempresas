@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Rol;
+use App\Models\Usuario;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,6 +36,17 @@ class UsuarioRequest extends FormRequest
 
                 if ($usuario && $usuario->is($this->user()) && ! $this->boolean('activo', true)) {
                     $validator->errors()->add('activo', 'No puede desactivar su propia cuenta.');
+                }
+
+                // Siempre debe quedar al menos un administrador activo
+                $rolAdmin = Rol::where('nombre', Rol::ADMINISTRADOR)->value('id');
+
+                if ($usuario && $usuario->rol_id === $rolAdmin && (int) $this->input('rol_id') !== $rolAdmin) {
+                    $otros = Usuario::where('rol_id', $rolAdmin)->where('activo', true)->whereKeyNot($usuario->id)->exists();
+
+                    if (! $otros) {
+                        $validator->errors()->add('rol_id', 'Debe quedar al menos un administrador activo.');
+                    }
                 }
             },
         ];
