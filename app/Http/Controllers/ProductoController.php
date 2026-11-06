@@ -21,9 +21,13 @@ class ProductoController extends Controller
         ]);
 
         $productos = Producto::with('categoria')
-            ->when($request->buscar, fn ($q, $texto) => $q->where(
-                fn ($q) => $q->where('nombre', 'like', "%{$texto}%")->orWhere('codigo', 'like', "%{$texto}%")
-            ))
+            ->when($request->buscar, function ($q, $texto) {
+                // % y _ se buscan como texto, no como comodines. «!» como escape funciona igual en MySQL y SQLite.
+                $patron = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $texto).'%';
+
+                $q->where(fn ($q) => $q->whereRaw("nombre LIKE ? ESCAPE '!'", [$patron])
+                    ->orWhereRaw("codigo LIKE ? ESCAPE '!'", [$patron]));
+            })
             ->when($request->categoria_id, fn ($q, $cat) => $q->where('categoria_id', $cat))
             ->orderBy('nombre')
             ->paginate(15)

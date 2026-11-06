@@ -12,6 +12,8 @@ use Illuminate\Validation\Rule;
  */
 class PeriodoRequest extends FormRequest
 {
+    public const MAXIMO_ANIOS = 2;
+
     public function authorize(): bool
     {
         return true;
@@ -33,6 +35,19 @@ class PeriodoRequest extends FormRequest
             'desde' => ['required', 'date'],
             'hasta' => ['required', 'date', 'after_or_equal:desde'],
             'proveedor_id' => ['nullable', 'integer', 'exists:proveedores,id'],
+        ];
+    }
+
+    /** Un periodo enorme arma gráficos de miles de puntos y vuelve lento el panel. */
+    public function after(): array
+    {
+        return [
+            function ($validator) {
+                if ($validator->errors()->isEmpty()
+                    && Carbon::parse($this->input('hasta'))->gt(Carbon::parse($this->input('desde'))->addYears(self::MAXIMO_ANIOS))) {
+                    $validator->errors()->add('hasta', 'El periodo no puede ser mayor a '.self::MAXIMO_ANIOS.' años.');
+                }
+            },
         ];
     }
 

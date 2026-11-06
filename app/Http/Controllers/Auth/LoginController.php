@@ -8,8 +8,10 @@ use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 /**
  * Inicio de sesión (RF01). RF01.2: tras 3 intentos fallidos se bloquea el acceso 5 minutos.
@@ -53,6 +55,10 @@ class LoginController extends Controller
 
         $destino = $usuario->tieneRol(Rol::ADMINISTRADOR) ? 'panel' : 'ventas.create';
 
+        if (! $this->puedeVolverA($request->session()->get('url.intended'), $usuario)) {
+            $request->session()->forget('url.intended');
+        }
+
         return redirect()->intended(route($destino));
     }
 
@@ -67,6 +73,22 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    /** El Vendedor no vuelve a una página de Administrador guardada antes del login: recibiría 403. */
+    private function puedeVolverA(?string $url, Usuario $usuario): bool
+    {
+        if (! $url || $usuario->tieneRol(Rol::ADMINISTRADOR)) {
+            return true;
+        }
+
+        try {
+            $ruta = Route::getRoutes()->match(Request::create($url));
+        } catch (Throwable) {
+            return false;
+        }
+
+        return ! in_array('rol:'.Rol::ADMINISTRADOR, $ruta->gatherMiddleware(), true);
     }
 
     /** Ingreso y salida no son cambios de datos, por eso no los registra el observador. */

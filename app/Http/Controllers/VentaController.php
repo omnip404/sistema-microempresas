@@ -47,7 +47,7 @@ class VentaController extends Controller
         $venta = $this->ventas->registrar($request->user(), $datos['items'], $datos['cliente_id'] ?? null);
 
         return redirect()->route('ventas.create')
-            ->with('ok', "Venta N° {$venta->id} registrada por Bs ".number_format($venta->total, 2))
+            ->with('ok', "Venta N° {$venta->id} registrada por Bs ".number_format($venta->total, 2, ',', '.'))
             ->with('comprobante', route('ventas.comprobante', $venta));
     }
 
