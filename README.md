@@ -22,7 +22,7 @@ Las rutas de todos los módulos son solo para el Administrador, con dos excepcio
 | Comparación de periodos (RF11): periodo A frente a B con variación % | Hecho | `/comparar-periodos` |
 | Bitácora (RF12): registro automático (Observer), ingreso y salida, consulta con filtros | Hecho | `/bitacora` |
 
-Requisitos no funcionales cubiertos: sesión de 15 minutos (RNF05), rendimiento con 10 000 ventas (RNF01, prueba `@group rendimiento`) y copias de seguridad (RNF11, ver más abajo). Pendiente fuera del código: publicar el repositorio en GitHub (RNF13).
+Requisitos no funcionales cubiertos: sesión de 15 minutos (RNF05), rendimiento con 10 000 ventas (RNF01, prueba `@group rendimiento`) y copias de seguridad (RNF11, ver más abajo). Repositorio publicado en GitHub (RNF13): https://github.com/omnip404/sistema-microempresas
 
 ## Instalación con XAMPP
 
